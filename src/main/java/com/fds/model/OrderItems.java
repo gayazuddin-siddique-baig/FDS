@@ -9,9 +9,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name="orderitems")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class OrderItems {
 
 	@Id
@@ -31,44 +37,9 @@ public class OrderItems {
 	@JoinColumn(name="order_id")
 	private Orders orders;
 
-	// getter and setter
-	public int getOrder_item_id() {
-		return order_item_id;
-	}
-	public void setOrder_item_id(int order_item_id) {
-		this.order_item_id = order_item_id;
-	}
-	public int getQuantity() {
-		return quantity;
-	}
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
-	}
-	public MenuItems getMenuItems() {
-		return menuitems;
-	}
-	public void setMenuItems(MenuItems menuitems) {
-		this.menuitems = menuitems;
-	}
-	public Orders getOrders() {
-		return orders;
-	}
-	public void setOrders(Orders orders) {
-		this.orders = orders;
-	}
-
-	// constructors
-	public OrderItems() {}
-	public OrderItems(int order_item_id, int quantity, MenuItems menuitems, Orders orders) {
-		this.order_item_id = order_item_id;
-		this.quantity = quantity;
-		this.menuitems = menuitems;
-		this.orders = orders;
-	}
-
 	// toString()
 	@Override
 	public String toString() {
-		return "OrderItems [order_item_id=" + order_item_id + ", quantity=" + quantity + ", menuitems=" + menuitems + ", orders=" + orders + "]";
+		return "OrderItems [order_item_id=" + order_item_id + ", quantity=" + quantity + "]";
 	}
 }

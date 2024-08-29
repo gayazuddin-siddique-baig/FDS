@@ -15,6 +15,9 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name="coupons", 
@@ -22,6 +25,9 @@ import jakarta.persistence.TemporalType;
 			   @Index(name="coupon_code", columnList="coupon_code")
 			   }
 )
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Coupons {
 	
 	@Id
@@ -41,48 +47,6 @@ public class Coupons {
 	@OneToMany(mappedBy="coupons", cascade=CascadeType.ALL)
 	@JsonManagedReference
 	private List<OrdersCoupons> orderscoupons;
-	
-	// getter and setter
-	public int getCoupon_id() {
-		return coupon_id;
-	}
-	public void setCoupon_id(int coupon_id) {
-		this.coupon_id = coupon_id;
-	}
-	public String getCoupon_code() {
-		return coupon_code;
-	}
-	public void setCoupon_code(String coupon_code) {
-		this.coupon_code = coupon_code;
-	}
-	public BigDecimal getDiscount_amount() {
-		return discount_amount;
-	}
-	public void setDiscount_amount(BigDecimal discount_amount) {
-		this.discount_amount = discount_amount;
-	}
-	public Date getExpiry_date() {
-		return expiry_date;
-	}
-	public List<OrdersCoupons> getOrderscoupons() {
-		return orderscoupons;
-	}
-	public void setOrderscoupons(List<OrdersCoupons> orderscoupons) {
-		this.orderscoupons = orderscoupons;
-	}
-	
-	public void setExpiry_date(Date expiry_date) {
-		this.expiry_date = expiry_date;
-	}
-	
-	// constructors
-	public Coupons() {}
-	public Coupons(int coupon_id, String coupon_code, BigDecimal discount_amount, Date expiry_date) {
-		this.coupon_id = coupon_id;
-		this.coupon_code = coupon_code;
-		this.discount_amount = discount_amount;
-		this.expiry_date = expiry_date;
-	}
 	
 	// toString()
 	@Override
