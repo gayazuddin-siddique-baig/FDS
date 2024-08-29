@@ -15,7 +15,7 @@ public class CustomersService {
 
 	private CustomersRepository customers_repository;
 	
-	public Customers getCustomerById(int customer_id) {
-		return customers_repository.findByCustomerId(customer_id);
+	public Customers getCustomersById(int customer_id) {
+		return customers_repository.getCustomersById(customer_id);
 	}
 }
