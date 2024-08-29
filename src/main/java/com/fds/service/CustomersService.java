@@ -18,4 +18,15 @@ public class CustomersService {
 	public Customers getCustomerById(int customer_id) {
 		return customers_repository.findByCustomerId(customer_id);
 	}
+	
+	public List<Customers> getAllCustomers(){
+		return customers_repository.findAll();
+	}
+	
+	public Customers deleteCustomerById(int customer_id) {
+		Customers cust = customers_repository.findByCustomerId(customer_id);
+		customers_repository.deleteById(customer_id);
+		return cust;
+		
+	}
 }
