@@ -16,7 +16,6 @@ public class RestaurantsService {
 	private RestaurantsRepository restaurants_repository;
 	
 	public List<Restaurants> getAllRestaurants() {
-		System.out.println(restaurants_repository.findAll());
-		return restaurants_repository.findAll();
+		return restaurants_repository.getAllRestaurants();
 	}
 }

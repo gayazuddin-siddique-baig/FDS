@@ -23,7 +23,7 @@ public class CustomersController {
 	
 	@RequestMapping(value="/customers/{customerId}", method=RequestMethod.GET)
 	public ResponseEntity<Customers> getCustomerById(@PathVariable("customerId") int customer_id) {
-		Customers customer = customers_service.getCustomerById(customer_id);
+		Customers customer = customers_service.getCustomersById(customer_id);
 		return new ResponseEntity<Customers>(customer, HttpStatus.OK);
 	}
 	

@@ -10,6 +10,9 @@ import com.fds.model.Restaurants;
 
 @Repository
 public interface RestaurantsRepository extends JpaRepository<Restaurants, Integer> {
-	
-	List<Restaurants> findAll();
+	@Query(
+			value="SELECT * FROM restaurants",
+			nativeQuery=true 
+	)
+	List<Restaurants> getAllRestaurants();
 }
