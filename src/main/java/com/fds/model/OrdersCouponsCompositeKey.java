@@ -5,8 +5,14 @@ import java.util.Objects;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Embeddable
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class OrdersCouponsCompositeKey implements Serializable {
 	
 	@Column(name="order_id")
@@ -14,27 +20,6 @@ public class OrdersCouponsCompositeKey implements Serializable {
 	
 	@Column(name="coupon_id")
 	private int coupon_id;
-
-	// getter and setter
-	public int getOrder_id() {
-		return order_id;
-	}
-	public void setOrder_id(int order_id) {
-		this.order_id = order_id;
-	}
-	public int getCoupon_id() {
-		return coupon_id;
-	}
-	public void setCoupon_id(int coupon_id) {
-		this.coupon_id = coupon_id;
-	}
-
-	// constructors
-	public OrdersCouponsCompositeKey() {}
-	public OrdersCouponsCompositeKey(int order_id, int coupon_id) {
-		this.order_id = order_id;
-		this.coupon_id = coupon_id;
-	}
 
 	// toString()
 	@Override

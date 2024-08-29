@@ -10,9 +10,15 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name="ratings")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Ratings {
 
 	@Id
@@ -36,51 +42,9 @@ public class Ratings {
 	@JsonBackReference
 	private Restaurants restaurants;
 
-	// getter and setter
-	public int getRating_id() {
-		return rating_id;
-	}
-	public void setRating_id(int rating_id) {
-		this.rating_id = rating_id;
-	}
-	public int getRating() {
-		return rating;
-	}
-	public void setRating(int rating) {
-		this.rating = rating;
-	}
-	public String getReview() {
-		return review;
-	}
-	public void setReview(String review) {
-		this.review = review;
-	}
-	public Orders getOrders() {
-		return orders;
-	}
-	public void setOrders(Orders orders) {
-		this.orders = orders;
-	}
-	public Restaurants getRestaurants() {
-		return restaurants;
-	}
-	public void setRestaurants(Restaurants restaurants) {
-		this.restaurants = restaurants;
-	}
-	
-	// constructors
-	public Ratings() {}
-	public Ratings(int rating_id, int rating, String review, Orders orders, Restaurants restaurants) {
-		this.rating_id = rating_id;
-		this.rating = rating;
-		this.review = review;
-		this.orders = orders;
-		this.restaurants = restaurants;
-	}
-
 	// toString()
 	@Override
 	public String toString() {
-		return "Ratings [rating_id=" + rating_id + ", rating=" + rating + ", review=" + review + ", orders=" + orders + ", restaurants=" + restaurants + "]";
+		return "Ratings [rating_id=" + rating_id + ", rating=" + rating + ", review=" + review + "]";
 	}
 }

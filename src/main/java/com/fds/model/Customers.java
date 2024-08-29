@@ -10,9 +10,15 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name="customers")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Customers {
 	
 	@Id
@@ -36,58 +42,9 @@ public class Customers {
 	@JsonManagedReference
 	private List<Orders> orders;
 
-	// getter and setter
-	public int getCustomer_id() {
-		return customer_id;
-	}
-	public void setCustomer_id(int customer_id) {
-		this.customer_id = customer_id;
-	}
-	public String getCustomer_name() {
-		return customer_name;
-	}
-	public void setCustomer_name(String customer_name) {
-		this.customer_name = customer_name;
-	}
-	public String getCustomer_email() {
-		return customer_email;
-	}
-	public void setCustomer_email(String customer_email) {
-		this.customer_email = customer_email;
-	}
-	public String getCustomer_phone() {
-		return customer_phone;
-	}
-	public void setCustomer_phone(String customer_phone) {
-		this.customer_phone = customer_phone;
-	}
-	public List<DeliveryAddresses> getDeliveryaddresses() {
-		return deliveryaddresses;
-	}
-	public void setDeliveryaddresses(List<DeliveryAddresses> deliveryaddresses) {
-		this.deliveryaddresses = deliveryaddresses;
-	}
-	public List<Orders> getOrders() {
-		return orders;
-	}
-	public void setOrders(List<Orders> orders) {
-		this.orders = orders;
-	}
-
-	// constructors
-	public Customers() {}
-	public Customers(int customer_id, String customer_name, String customer_email, String customer_phone, List<DeliveryAddresses> deliveryaddresses, List<Orders> orders) {
-		this.customer_id = customer_id;
-		this.customer_name = customer_name;
-		this.customer_email = customer_email;
-		this.customer_phone = customer_phone;
-		this.deliveryaddresses = deliveryaddresses;
-		this.orders = orders;
-	}
-
 	// toString()
 	@Override
 	public String toString() {
-		return "Customers [customer_id=" + customer_id + ", customer_name=" + customer_name + ", customer_email=" + customer_email + ", customer_phone=" + customer_phone + ", deliveryaddresses=" + deliveryaddresses + ", orders=" + orders + "]";
+		return "Customers [customer_id=" + customer_id + ", customer_name=" + customer_name + ", customer_email=" + customer_email + ", customer_phone=" + customer_phone + "]";
 	}
 }
