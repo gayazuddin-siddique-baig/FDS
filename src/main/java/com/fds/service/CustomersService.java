@@ -15,8 +15,8 @@ public class CustomersService {
 
 	private CustomersRepository customers_repository;
 	
-	public Customers getCustomerById(int customer_id) {
-		return customers_repository.findByCustomerId(customer_id);
+	public Customers getCustomersById(int customer_id) {
+		return customers_repository.getCustomersById(customer_id);
 	}
 	
 	public List<Customers> getAllCustomers(){
@@ -24,7 +24,7 @@ public class CustomersService {
 	}
 	
 	public Customers deleteCustomerById(int customer_id) {
-		Customers cust = customers_repository.findByCustomerId(customer_id);
+		Customers cust = getCustomersById(customer_id);
 		customers_repository.deleteById(customer_id);
 		return cust;
 	}
