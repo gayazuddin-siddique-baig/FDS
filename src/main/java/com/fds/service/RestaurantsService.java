@@ -25,4 +25,8 @@ public class RestaurantsService {
 		return restaurants_repository.findById(restaurantId).orElse(null);
 		
 	}
+	
+	public List<MenuItems> getAllMenuItemsByRestaurant(Restaurants restaurant){
+		return restaurants_repository.getAllMenuItemsByRestaurant(restaurant);
+	}
 }
