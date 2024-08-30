@@ -18,4 +18,8 @@ public class DeliveryDriversService {
     public List<DeliveryDrivers> getAllDeliveryDrivers() {
         return deliveryDriversRepository.findAll();
     }
+    
+    public DeliveryDrivers getDriverById(int id) {
+    	return deliveryDriversRepository.findById(id).get();
+    }
 }
