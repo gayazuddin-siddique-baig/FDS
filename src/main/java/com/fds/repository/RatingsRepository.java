@@ -4,9 +4,18 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+
 import com.fds.model.Customers;
 import com.fds.model.Ratings;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
-public interface RatingsRepository extends JpaRepository<Ratings,Integer>{
-	List<Ratings> findByOrders_Customers(Customers customer); 
+import com.fds.model.Ratings;
+
+public interface RatingsRepository extends JpaRepository<Ratings, Integer> {
+	@Query(
+			value="SELECT * FROM ratings WHERE restaurant_id=:restaurantId",
+			nativeQuery = true
+	)
+	List<Ratings> findByRestaurants(@Param("restaurantId") int restaurantId);
 }

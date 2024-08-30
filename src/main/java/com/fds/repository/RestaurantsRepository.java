@@ -18,6 +18,5 @@ public interface RestaurantsRepository extends JpaRepository<Restaurants, Intege
 	List<Restaurants> getAllRestaurants();
 	
 	List<MenuItems> getAllMenuItemsByRestaurant(Restaurants restaurant);
-	
 }
 
