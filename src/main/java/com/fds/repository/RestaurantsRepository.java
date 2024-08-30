@@ -15,4 +15,7 @@ public interface RestaurantsRepository extends JpaRepository<Restaurants, Intege
 			nativeQuery=true 
 	)
 	List<Restaurants> getAllRestaurants();
+	
+	
 }
+
