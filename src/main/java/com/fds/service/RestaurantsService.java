@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.fds.model.Ratings;
 import com.fds.model.Restaurants;
 import com.fds.repository.RestaurantsRepository;
 
