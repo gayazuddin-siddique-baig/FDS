@@ -82,4 +82,8 @@ public class RestaurantsService {
 		Restaurants restaurant = restaurants_repository.findById(restaurantId).get();
 		return restaurant.getMenuitems();
 	}
+	
+	public Restaurants saveRestaurants(Restaurants restaurant) {
+		return restaurants_repository.save(restaurant);
+	}
 }
