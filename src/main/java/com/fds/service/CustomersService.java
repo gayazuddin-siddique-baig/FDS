@@ -24,11 +24,7 @@ public class CustomersService {
 	}
 	
 	public Customers deleteCustomerById(int customer_id) {
-
 		Customers cust = customers_repository.getCustomersById(customer_id);
-
-		Customers cust = getCustomersById(customer_id);
-
 		customers_repository.deleteById(customer_id);
 		return cust;
 	}
