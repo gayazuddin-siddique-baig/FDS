@@ -27,6 +27,5 @@ public class CustomersService {
 		Customers cust = getCustomersById(customer_id);
 		customers_repository.deleteById(customer_id);
 		return cust;
-		
 	}
 }
