@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.fds.model.MenuItems;
 import com.fds.model.Customers;
 import com.fds.model.DeliveryAddresses;
 import com.fds.model.DeliveryDrivers;
@@ -24,7 +25,16 @@ public class RestaurantsService {
 	public List<Restaurants> getAllRestaurants() {
 		return restaurants_repository.getAllRestaurants();
 	}
-	// get delivery address by restaurant id
+	
+	public Restaurants getRestaurantById(int restaurantId){
+		return restaurants_repository.findById(restaurantId).orElse(null);
+		
+	}
+	
+	public List<MenuItems> getAllMenuItemsByRestaurant(Restaurants restaurant){
+		return restaurants_repository.getAllMenuItemsByRestaurant(restaurant);
+  }
+  
 	public List<DeliveryAddresses> getDeliveryAddresses(int restaurantId) {
 		Optional<Restaurants> rs = restaurants_repository.findById(restaurantId);
 		List<DeliveryAddresses> list = new ArrayList<>();
@@ -55,6 +65,5 @@ public class RestaurantsService {
 			return restaurants_repository.save(oldRestaurant);
 		}
 		else return null;
-		
 	}
 }

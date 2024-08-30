@@ -3,6 +3,10 @@ package com.fds.repository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+
+
+import com.fds.model.Customers;
+import com.fds.model.Ratings;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
