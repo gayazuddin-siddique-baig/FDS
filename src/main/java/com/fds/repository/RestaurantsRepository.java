@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.fds.model.MenuItems;
 import com.fds.model.Restaurants;
 
 import jakarta.transaction.Transactional;
@@ -27,4 +28,6 @@ public interface RestaurantsRepository extends JpaRepository<Restaurants, Intege
 			nativeQuery=true 
 	)
 	void deleteRestaurantById(@Param("restaurant_id") int restaurant_id);
+  
+	List<MenuItems> getAllMenuItemsByRestaurant(Restaurants restaurant);
 }

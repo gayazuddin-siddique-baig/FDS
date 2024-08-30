@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
@@ -48,6 +49,7 @@ public class MenuItems {
 	
 	@OneToMany(mappedBy="menuitems", cascade=CascadeType.ALL)
 	@JsonManagedReference
+	@JsonIgnore
 	private List<OrderItems> orderitems;
 
 	// toString()
