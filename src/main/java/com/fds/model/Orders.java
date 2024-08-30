@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
@@ -56,6 +57,7 @@ public class Orders {
 	
 	@OneToMany(mappedBy="orders", cascade=CascadeType.ALL)
 	@JsonManagedReference
+	@JsonIgnore
 	private List<Ratings> ratings;
 	
 	@OneToMany(mappedBy="orders", cascade=CascadeType.ALL)
@@ -64,6 +66,7 @@ public class Orders {
 	
 	@OneToMany(mappedBy="orders", cascade=CascadeType.ALL)
 	@JsonManagedReference
+	@JsonIgnore
 	private List<OrdersCoupons> orderscoupons;
 
 	// toString()
