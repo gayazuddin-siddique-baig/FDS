@@ -15,19 +15,6 @@ import jakarta.transaction.Transactional;
 
 @Repository
 public interface RestaurantsRepository extends JpaRepository<Restaurants, Integer> {
-	@Query(
-			value="SELECT * FROM restaurants",
-			nativeQuery=true 
-	)
-	List<Restaurants> getAllRestaurants();
 	
-	@Modifying
-	@Transactional
-	@Query(
-			value="DELETE FROM restaurants WHERE restaurant_id=:restaurant_id",
-			nativeQuery=true 
-	)
-	void deleteRestaurantById(@Param("restaurant_id") int restaurant_id);
   
-	List<MenuItems> getAllMenuItemsByRestaurant(Restaurants restaurant);
 }

@@ -12,6 +12,7 @@ import com.fds.model.Customers;
 import com.fds.model.DeliveryAddresses;
 import com.fds.model.DeliveryDrivers;
 import com.fds.model.Orders;
+import com.fds.model.Ratings;
 import com.fds.model.Restaurants;
 import com.fds.repository.RestaurantsRepository;
 
@@ -22,20 +23,18 @@ public class RestaurantsService {
 	private RestaurantsRepository restaurants_repository;
 	
 	public List<Restaurants> getAllRestaurants() {
-		return restaurants_repository.getAllRestaurants();
+		return restaurants_repository.findAll();
 	}
 	
 	public void deleteRestaurantById(int restaurant_id) {
-		restaurants_repository.deleteRestaurantById(restaurant_id);
+		restaurants_repository.deleteById(restaurant_id);
+	}
 
 	public Restaurants getRestaurantById(int restaurantId){
 		return restaurants_repository.findById(restaurantId).orElse(null);
 		
 	}
 	
-	public List<MenuItems> getAllMenuItemsByRestaurant(Restaurants restaurant){
-		return restaurants_repository.getAllMenuItemsByRestaurant(restaurant);
-  }
   
 	public List<DeliveryAddresses> getDeliveryAddresses(int restaurantId) {
 		Optional<Restaurants> rs = restaurants_repository.findById(restaurantId);
@@ -67,5 +66,20 @@ public class RestaurantsService {
 			return restaurants_repository.save(oldRestaurant);
 		}
 		else return null;
+	}
+
+	public List<String> getAllRatingsOfRestaurant(int restaurantId) {
+		List<String> ratingList = new ArrayList<>();
+		Restaurants restaurant = restaurants_repository.findById(restaurantId).get();
+		List<Ratings> ratings= restaurant.getRatings();
+		for(Ratings currRating:ratings) {
+			ratingList.add(currRating.getReview());
+		}
+		return ratingList;
+	}
+
+	public List<MenuItems> getMenuItemsByRestaurant(int restaurantId) {
+		Restaurants restaurant = restaurants_repository.findById(restaurantId).get();
+		return restaurant.getMenuitems();
 	}
 }

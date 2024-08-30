@@ -16,7 +16,7 @@ import com.fds.service.DeliveryDriversService;
 import com.fds.service.OrdersService;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/orders")
 public class OrdersController {
 
 	@Autowired
@@ -24,12 +24,12 @@ public class OrdersController {
 	@Autowired
 	private DeliveryDriversService deliveryDriversService;
 	
-	@RequestMapping(value="/orders/{orderId}", method=RequestMethod.GET)
+	@RequestMapping(value="/{orderId}", method=RequestMethod.GET)
 	public ResponseEntity<Orders> getOrdersById(@PathVariable("orderId") int order_id) {
 		Orders order = orders_service.getOrdersById(order_id);
 		return new ResponseEntity<Orders>(order, HttpStatus.OK);
 	}
-	@RequestMapping(value="/orders/{orderId}/assignDriver/{driverId}", method=RequestMethod.PUT)
+	@RequestMapping(value="/{orderId}/assignDriver/{driverId}", method=RequestMethod.PUT)
 	public ResponseEntity<DeliveryDrivers> assignDriverById(@PathVariable("orderId") int orderId,@PathVariable("driverId") int driverId){
 		DeliveryDrivers deliveryDriver= deliveryDriversService.getDriverById(driverId);
 		DeliveryDrivers updatedDriver=orders_service.updateDriver(deliveryDriver, orderId);

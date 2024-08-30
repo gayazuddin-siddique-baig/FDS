@@ -15,12 +15,12 @@ import lombok.AllArgsConstructor;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api")
+@RequestMapping("/api/drivers")
 public class DeliveryDriversController {
 
     private DeliveryDriversService deliveryDriversService;
 
-    @RequestMapping(value="/drivers", method=RequestMethod.GET)
+    @RequestMapping(value="", method=RequestMethod.GET)
     public ResponseEntity<List<DeliveryDrivers>> getAllDeliveryDrivers() {
         List<DeliveryDrivers> driversList = deliveryDriversService.getAllDeliveryDrivers();
         return new ResponseEntity<List<DeliveryDrivers>>(driversList, HttpStatus.OK);
