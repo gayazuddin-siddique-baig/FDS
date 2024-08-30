@@ -79,5 +79,11 @@ public class RestaurantsController {
 		List<MenuItems> menuItems = restaurants_service.getMenuItemsByRestaurant(restaurantId);
 		return new ResponseEntity<>(menuItems,HttpStatus.OK);
 	}
+	
+	@RequestMapping(value = "", method=RequestMethod.POST)
+	public ResponseEntity<Restaurants> createRestaurant(@RequestBody Restaurants newRestaurant) {
+		Restaurants saved = restaurants_service.saveRestaurants(newRestaurant);
+		return new ResponseEntity<Restaurants>(saved, HttpStatus.CREATED);
+	}
 }
 
