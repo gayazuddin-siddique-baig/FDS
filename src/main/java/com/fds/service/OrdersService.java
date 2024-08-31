@@ -4,7 +4,6 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.fds.exception.AssingedDriverToOrderException;
 import com.fds.exception.OrderNotFoundException;
 import com.fds.model.DeliveryDrivers;
@@ -17,11 +16,11 @@ public class OrdersService {
 	@Autowired
 	private OrdersRepository orders_repository;
 	
+	// method to get the specific order
 	public Orders getOrdersById(int order_id) {
 		Orders order= orders_repository.findById(order_id).orElse(null);
-		if(order ==null) {
-			throw new OrderNotFoundException("Order with id "+order_id+" not found");
-		}
+		Orders order = orders_repository.findById(order_id).orElse(null);
+		if(order == null) throw new OrderNotFoundException("No order found with id: " +order_id, "GETFAILS");
 		return order;
 	}
 
