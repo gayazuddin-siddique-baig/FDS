@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,5 +26,11 @@ public class DeliveryDriversController {
     public ResponseEntity<List<DeliveryDrivers>> getAllDeliveryDrivers() {
         List<DeliveryDrivers> driversList = deliveryDriversService.getAllDeliveryDrivers();
         return new ResponseEntity<List<DeliveryDrivers>>(driversList, HttpStatus.OK);
+    }
+    
+    @GetMapping("/{driverId}")
+    public ResponseEntity<DeliveryDrivers> getDriverById(@PathVariable int driverId){
+    	DeliveryDrivers driver = deliveryDriversService.getDriverById(driverId);
+    	return new ResponseEntity<>(driver,HttpStatus.OK);
     }
 }
