@@ -2,6 +2,11 @@ package com.fds.exception;
 
 public class OrderNotFoundException extends RuntimeException {
 	
+
+	public OrderNotFoundException(String message) {
+		super(message);
+	}
+
 	private String code;
 	
 	// constructor
@@ -14,4 +19,5 @@ public class OrderNotFoundException extends RuntimeException {
 	public String getCode() {
 		return code;
 	}
+
 }

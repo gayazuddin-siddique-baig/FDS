@@ -44,4 +44,25 @@ public class GlobalExceptionHandler {
 		ErrorResponse error = new ErrorResponse("GETFAILS", "Incorrect url");
 		return new ResponseEntity<ErrorResponse>(error, HttpStatus.BAD_REQUEST);
 	}
+
+	
+	//3 driver not found
+	@ExceptionHandler(DriverNotFoundException.class)
+	public ResponseEntity<ErrorResponse> handleDriverNotFoundException(DriverNotFoundException e) {
+		ErrorResponse error = new ErrorResponse("GETFAILS", e.getMessage());
+		return new ResponseEntity<ErrorResponse>(error, HttpStatus.NOT_FOUND);
+	}
+	
+	//4
+	@ExceptionHandler(AssingedDriverToOrderException.class)
+	public ResponseEntity<ErrorResponse> handleAssingDriverException(AssingedDriverToOrderException e) {
+		ErrorResponse error = new ErrorResponse("PUTFAILS", e.getMessage());
+		return new ResponseEntity<ErrorResponse>(error, HttpStatus.NOT_FOUND);
+	}
+	
+	//5
+	
+	
+	//---------------end >>>>
+
 }

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fds.exception.DriverNotFoundException;
 import com.fds.exception.SuccessResponse;
 import com.fds.model.DeliveryDrivers;
 import com.fds.model.Orders;
@@ -36,8 +37,7 @@ public class OrdersController {
 	public ResponseEntity<SuccessResponse> assignDriverById(@PathVariable("orderId") int orderId,@PathVariable("driverId") int driverId){
 		DeliveryDrivers deliveryDriver= deliveryDriversService.getDriverById(driverId);
 		DeliveryDrivers updatedDriver=orders_service.updateDriver(deliveryDriver, orderId);
-		SuccessResponse response = new SuccessResponse("DELETESUCCESS", "Restaurant deleted successfully");
-		
+		SuccessResponse response = new SuccessResponse("PUTSUCCESS", "Order has been successfully assinged to driver");
 		return new ResponseEntity<SuccessResponse>(response, HttpStatus.OK);
 	}
 }
