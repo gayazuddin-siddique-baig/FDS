@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.fds.exception.CustomerNotFoundException;
 import com.fds.model.Customers;
 import com.fds.model.Orders;
 import com.fds.model.Ratings;
@@ -19,8 +20,11 @@ public class CustomersService {
 
 	private CustomersRepository customers_repository;
 	
+	// method to get the specific customer
 	public Customers getCustomersById(int customer_id) {
-		return customers_repository.findById(customer_id).orElse(null);
+		Customers customer = customers_repository.findById(customer_id).orElse(null);
+		if(customer == null) throw new CustomerNotFoundException("No customer found with id: " +customer_id, "GETFAILS");
+		return customer;
 	}
 	
 	public List<Customers> getAllCustomers(){
@@ -38,7 +42,7 @@ public class CustomersService {
 	
 	public List<String>getRatingsByCustomer(int customerId){
 		List<String> reviewList=new ArrayList<>();
-		Customers cust= customers_repository.getCustomersById(customerId);
+		Customers cust= customers_repository.findById(customerId).get();
 		List<Orders> order = cust.getOrders();
 		for(Orders currentOrder:order) {
 			List<Ratings> getRatingList=currentOrder.getRatings();

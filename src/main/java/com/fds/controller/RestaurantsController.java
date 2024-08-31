@@ -43,7 +43,7 @@ public class RestaurantsController {
 		return new ResponseEntity<List<Restaurants>>(restaurants_service.getAllRestaurants(), HttpStatus.OK);
 	}
 	
-	// method to delete a specific restaurant
+	// method to delete the specific restaurant
 	@RequestMapping(value="/{restaurantId}", method=RequestMethod.DELETE)
 	public ResponseEntity<SuccessResponse> deleteRestaurantById(@PathVariable("restaurantId") int restaurant_id) {
 		restaurants_service.deleteRestaurantById(restaurant_id);
@@ -69,7 +69,7 @@ public class RestaurantsController {
 	public ResponseEntity<SuccessResponse> updateRestaurant(@RequestBody Restaurants newRestaurant, @PathVariable int restaurantId){
 		Restaurants updatedRest = restaurants_service.updateRestaurantById(newRestaurant, restaurantId);
 		if(updatedRest == null) {
-			throw new RestaurantNotFoundException("Restaurant with id "+restaurantId+"not found");
+			throw new RestaurantNotFoundException("Restaurant with id "+restaurantId+"not found", "PUTFAILS");
 		}
 		SuccessResponse response = new SuccessResponse("DELETESUCCESS", "Restaurant details updated successfully");
 		return new ResponseEntity<SuccessResponse>(response,HttpStatus.OK );	
@@ -86,8 +86,8 @@ public class RestaurantsController {
 	@RequestMapping(value="/{restaurantId}/menu", method=RequestMethod.POST)
 	public ResponseEntity<SuccessResponse> addMenuItemInSpecificRestaurant(@PathVariable("restaurantId") int restaurant_id, @RequestBody MenuItems menuItems) {
 		restaurants_service.addMenuItemInSpecificRestaurant(restaurant_id, menuItems);
-		SuccessResponse response = new SuccessResponse("POSTSUCCESS", "Menu item added to the restaurant successfully");
-		return new ResponseEntity<SuccessResponse>(response, HttpStatus.CREATED);
+		SuccessResponse success = new SuccessResponse("POSTSUCCESS", "Menu item added to the restaurant successfully");
+		return new ResponseEntity<SuccessResponse>(success, HttpStatus.CREATED);
 	}
 	
 	// method to get a specific restaurant
@@ -95,7 +95,7 @@ public class RestaurantsController {
 	public ResponseEntity<Restaurants> getRestaurantsById(@PathVariable("restaurantId") int restaurant_id) {
 		Restaurants restaurant = restaurants_service.getRestaurantById(restaurant_id);
 		if(restaurant == null) {
-			throw new RestaurantNotFoundException("Restaurant with id "+restaurant_id+"not found");
+			throw new RestaurantNotFoundException("Restaurant with id "+restaurant_id+"not found", "GETFAILS");
 		}
 		return new ResponseEntity<Restaurants>(restaurant, HttpStatus.OK);
 	}
