@@ -105,5 +105,17 @@ public class RestaurantsController {
 		Restaurants saved = restaurants_service.saveRestaurants(newRestaurant);
 		return new ResponseEntity<Restaurants>(saved, HttpStatus.CREATED);
 	}
+	
+	@RequestMapping(value = "/{restaurantId}/menu/{itemId}", method=RequestMethod.PUT)
+	public ResponseEntity<SuccessResponse> updateMenuItemOfRestaurant(@RequestBody MenuItems menuItem, @PathVariable("restaurantId") int restaurantId, @PathVariable("itemId") int itemId) {
+		Restaurants restaurant = restaurants_service.getRestaurantById(restaurantId);
+		if(restaurant == null) {
+			throw new RestaurantNotFoundException("Restaurant with id " + restaurantId +" not found", "GETFAILS");
+		}
+		restaurants_service.updateMenuItemOfRestaurant(restaurant, itemId, menuItem);
+		SuccessResponse response = new SuccessResponse("PUTSUCCESS", "MenuItem updated successfully");
+		return new ResponseEntity<SuccessResponse>(response, HttpStatus.OK);
+	}
+	
 }
 
