@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fds.model.MenuItems;
+import com.fds.exception.MenuNotFoundException;
 import com.fds.exception.NoRestaurantsFoundException;
 import com.fds.exception.RestaurantNotFoundException;
 import com.fds.model.Customers;
@@ -106,4 +107,32 @@ public class RestaurantsService {
 	public Restaurants saveRestaurants(Restaurants restaurant) {
 		return restaurants_repository.save(restaurant);
 	}
+
+	public void updateMenuItemOfRestaurant(Restaurants restaurant, int itemId, MenuItems menuItem) {
+		List<MenuItems> menuItems = restaurant.getMenuitems();
+		boolean found = false;
+		for(MenuItems m: menuItems) {
+			if(m.getItem_id() == itemId) {
+				if(menuItem.getItem_name() != null) {
+					m.setItem_name(menuItem.getItem_name());					
+				}
+				
+				if(menuItem.getItem_description() != null) {
+					m.setItem_description(menuItem.getItem_description());					
+				}
+				
+				if(menuItem.getItem_price() != null) {
+					m.setItem_price(menuItem.getItem_price());					
+				}
+				restaurants_repository.save(restaurant);
+				found = true;
+				break;
+			}
+		}
+		
+		if(!found) {
+			throw new MenuNotFoundException("MenuItem of Id: " + itemId + " not found", "PUTFAILS");
+		}
+	}
+
 }
