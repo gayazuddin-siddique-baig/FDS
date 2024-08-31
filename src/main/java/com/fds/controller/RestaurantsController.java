@@ -68,8 +68,10 @@ public class RestaurantsController {
 	@RequestMapping(value="/{restaurantId}", method=RequestMethod.PUT)
 	public ResponseEntity<SuccessResponse> updateRestaurant(@RequestBody Restaurants newRestaurant, @PathVariable int restaurantId){
 		Restaurants updatedRest = restaurants_service.updateRestaurantById(newRestaurant, restaurantId);
+		if(updatedRest == null) {
+			throw new RestaurantNotFoundException("Restaurant with id "+restaurantId+"not found");
+		}
 		SuccessResponse response = new SuccessResponse("DELETESUCCESS", "Restaurant details updated successfully");
-		
 		return new ResponseEntity<SuccessResponse>(response,HttpStatus.OK );	
 	}
 	
@@ -93,7 +95,7 @@ public class RestaurantsController {
 	public ResponseEntity<Restaurants> getRestaurantsById(@PathVariable("restaurantId") int restaurant_id) {
 		Restaurants restaurant = restaurants_service.getRestaurantById(restaurant_id);
 		if(restaurant == null) {
-			throw new RestaurantNotFoundException("not found");
+			throw new RestaurantNotFoundException("Restaurant with id "+restaurant_id+"not found");
 		}
 		return new ResponseEntity<Restaurants>(restaurant, HttpStatus.OK);
 	}
