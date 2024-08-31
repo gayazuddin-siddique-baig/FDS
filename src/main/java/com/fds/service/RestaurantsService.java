@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fds.model.MenuItems;
+import com.fds.exception.NoRestaurantsFoundException;
 import com.fds.exception.RestaurantNotFoundException;
 import com.fds.model.Customers;
 import com.fds.model.DeliveryAddresses;
@@ -23,11 +24,17 @@ public class RestaurantsService {
 	@Autowired
 	private RestaurantsRepository restaurants_repository;
 	
+	// method to get all the restaurants
 	public List<Restaurants> getAllRestaurants() {
-		return restaurants_repository.findAll();
+		List<Restaurants> restaurants = restaurants_repository.findAll();
+		if(restaurants.isEmpty()) throw new NoRestaurantsFoundException("Restaurants list is empty");
+		return restaurants;
 	}
 	
+	// method to delete the specific restaurant
 	public void deleteRestaurantById(int restaurant_id) {
+		Restaurants restaurant = restaurants_repository.findById(restaurant_id).orElse(null);
+		if(restaurant == null) throw new RestaurantNotFoundException("Restaurant doesn't exist with id: " +restaurant_id, "DELETEFAILS");
 		restaurants_repository.deleteById(restaurant_id);
 	}
 
@@ -80,7 +87,7 @@ public class RestaurantsService {
 	public List<MenuItems> getMenuItemsByRestaurant(int restaurantId) {
 		Restaurants restaurant = restaurants_repository.findById(restaurantId).orElse(null);
 		if(restaurant == null) {
-			throw new RestaurantNotFoundException("Restaurant not found with id: " +restaurantId);
+			throw new RestaurantNotFoundException("Restaurant not found with id: " +restaurantId, "GETFAILS");
 		}
 		return restaurant.getMenuitems();
 	}
@@ -93,14 +100,8 @@ public class RestaurantsService {
 			restaurant.getMenuitems().add(menuItem);
 			restaurants_repository.save(restaurant);
 		}
-		else {
-			throw new RestaurantNotFoundException("Restaurant not found with id: " +restaurant_id);
-
-		}}
-
-		}
+		else throw new RestaurantNotFoundException("Restaurant not found with id: " +restaurant_id, "ADDFAILS");
 	}
-
 
 	public Restaurants saveRestaurants(Restaurants restaurant) {
 		return restaurants_repository.save(restaurant);

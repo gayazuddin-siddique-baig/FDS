@@ -25,6 +25,7 @@ public class OrdersController {
 	@Autowired
 	private DeliveryDriversService deliveryDriversService;
 	
+	// method to get the specific order
 	@RequestMapping(value="/{orderId}", method=RequestMethod.GET)
 	public ResponseEntity<Orders> getOrdersById(@PathVariable("orderId") int order_id) {
 		Orders order = orders_service.getOrdersById(order_id);
