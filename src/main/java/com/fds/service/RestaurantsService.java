@@ -78,7 +78,10 @@ public class RestaurantsService {
 	}
 
 	public List<MenuItems> getMenuItemsByRestaurant(int restaurantId) {
-		Restaurants restaurant = restaurants_repository.findById(restaurantId).get();
+		Restaurants restaurant = restaurants_repository.findById(restaurantId).orElse(null);
+		if(restaurant == null) {
+			throw new RestaurantNotFoundException("Restaurant not found with id: " +restaurantId);
+		}
 		return restaurant.getMenuitems();
 	}
 	
@@ -94,6 +97,8 @@ public class RestaurantsService {
 			throw new RestaurantNotFoundException("Restaurant not found with id: " +restaurant_id);
 		}
 	}
+
+
 	public Restaurants saveRestaurants(Restaurants restaurant) {
 		return restaurants_repository.save(restaurant);
 	}
