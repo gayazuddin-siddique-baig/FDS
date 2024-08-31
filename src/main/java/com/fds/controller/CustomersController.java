@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fds.exception.CustomerNotFoundException;
 import com.fds.model.Customers;
 import com.fds.service.CustomersService;
 
@@ -25,6 +26,9 @@ public class CustomersController {
 	@RequestMapping(value="/{customerId}", method=RequestMethod.GET)
 	public ResponseEntity<Customers> getCustomerById(@PathVariable("customerId") int customer_id) {
 		Customers customer = customers_service.getCustomersById(customer_id);
+		if(customer == null) {
+			throw new CustomerNotFoundException("vjhhj");
+		}
 		return new ResponseEntity<Customers>(customer, HttpStatus.OK);
 	}
 	
