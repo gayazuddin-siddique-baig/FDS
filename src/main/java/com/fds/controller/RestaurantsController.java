@@ -76,7 +76,7 @@ public class RestaurantsController {
 	}
 	
 	// method to get all the menu items of a specific restaurant
-	@RequestMapping(value="/{restaurantId}/menuitems", method=RequestMethod.GET)
+	@RequestMapping(value="/{restaurantId}/menu", method=RequestMethod.GET)
 	public ResponseEntity<List<MenuItems>> getMenuItemsByRestaurants(@PathVariable("restaurantId") int restaurant_id){
 		List<MenuItems> menuItems = restaurants_service.getMenuItemsByRestaurant(restaurant_id);
 		return new ResponseEntity<>(menuItems, HttpStatus.OK);

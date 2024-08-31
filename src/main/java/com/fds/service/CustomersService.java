@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.fds.exception.CustomerNotFoundException;
+import com.fds.exception.OrderNotFoundException;
 import com.fds.model.Customers;
 import com.fds.model.Orders;
 import com.fds.model.Ratings;
@@ -38,20 +39,17 @@ public class CustomersService {
 		return cust;
 	}
 	
-
-	
-	public List<String>getRatingsByCustomer(int customerId){
-		List<String> reviewList=new ArrayList<>();
-		Customers cust= customers_repository.findById(customerId).get();
-		List<Orders> order = cust.getOrders();
-		for(Orders currentOrder:order) {
-			List<Ratings> getRatingList=currentOrder.getRatings();
-			for(Ratings currentRatings:getRatingList) {
-				reviewList.add(currentRatings.getReview());
-			}
+	// method to get all the reviews of the specific customer
+	public List<String> getRatingsByCustomer(int customer_id){
+		List<String> reviews = new ArrayList<>();
+		Customers customer = customers_repository.findById(customer_id).orElse(null);
+		if(customer == null) throw new CustomerNotFoundException("Customer not found with id: " +customer_id, "GETALLFAILS");
+		List<Orders> orders = customer.getOrders();
+		if(orders.isEmpty()) throw new OrderNotFoundException("Orders list is empty", "GETALLFAILS");
+		for(Orders o : orders) {
+			List<Ratings> ratings = o.getRatings();
+			for(Ratings r : ratings) reviews.add(r.getReview());
 		}
-		return reviewList;
+		return reviews;
 	}
-	
-	
 }

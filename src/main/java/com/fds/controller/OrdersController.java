@@ -40,4 +40,12 @@ public class OrdersController {
 		SuccessResponse response = new SuccessResponse("PUTSUCCESS", "Order has been successfully assinged to driver");
 		return new ResponseEntity<SuccessResponse>(response, HttpStatus.OK);
 	}
+	
+	// method to delete the specific order
+	@RequestMapping(value="/{orderId}", method=RequestMethod.DELETE)
+	public ResponseEntity<SuccessResponse> deleteSpecificOrder(@PathVariable("orderId") int order_id) {
+		orders_service.deleteSpecificOrder(order_id);
+		SuccessResponse success = new SuccessResponse("DELETESUCCESS", "Order deleted successfully");
+		return new ResponseEntity<SuccessResponse>(success, HttpStatus.OK);
+	}
 }
