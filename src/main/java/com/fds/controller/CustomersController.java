@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fds.exception.SuccessResponse;
 import com.fds.model.Customers;
 import com.fds.service.CustomersService;
 
@@ -36,9 +37,11 @@ public class CustomersController {
 	
 	//pankaj delete customer by Id
 	@RequestMapping(value="/{customerId}", method=RequestMethod.DELETE)
-	public ResponseEntity<Customers> deleteCustomerById(@PathVariable("customerId") int customer_id) {
+	public ResponseEntity<SuccessResponse> deleteCustomerById(@PathVariable("customerId") int customer_id) {
 		Customers customer = customers_service.deleteCustomerById(customer_id);
-		return new ResponseEntity<Customers>(customer, HttpStatus.OK);
+		SuccessResponse response = new SuccessResponse("DELETESUCCESS", "Customer deleted successfully");
+		
+		return new ResponseEntity<SuccessResponse>(response, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value="/{customerId}/reviews", method=RequestMethod.GET)

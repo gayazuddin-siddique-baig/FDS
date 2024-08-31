@@ -65,9 +65,11 @@ public class RestaurantsController {
   
 	// method to update a specific restaurant
 	@RequestMapping(value="/{restaurantId}", method=RequestMethod.PUT)
-	public ResponseEntity<Restaurants> updateRestaurant(@RequestBody Restaurants newRestaurant, @PathVariable int restaurantId){
+	public ResponseEntity<SuccessResponse> updateRestaurant(@RequestBody Restaurants newRestaurant, @PathVariable int restaurantId){
 		Restaurants updatedRest = restaurants_service.updateRestaurantById(newRestaurant, restaurantId);
-		return new ResponseEntity<Restaurants>(updatedRest,HttpStatus.OK );	
+		SuccessResponse response = new SuccessResponse("DELETESUCCESS", "Restaurant details updated successfully");
+		
+		return new ResponseEntity<SuccessResponse>(response,HttpStatus.OK );	
 	}
 	
 	// method to get all the menu items of a specific restaurant
