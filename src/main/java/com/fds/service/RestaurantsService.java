@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fds.model.MenuItems;
+import com.fds.exception.RestaurantNotFoundException;
 import com.fds.model.Customers;
 import com.fds.model.DeliveryAddresses;
 import com.fds.model.DeliveryDrivers;
@@ -32,10 +33,8 @@ public class RestaurantsService {
 
 	public Restaurants getRestaurantById(int restaurantId){
 		return restaurants_repository.findById(restaurantId).orElse(null);
-		
 	}
 	
-  
 	public List<DeliveryAddresses> getDeliveryAddresses(int restaurantId) {
 		Optional<Restaurants> rs = restaurants_repository.findById(restaurantId);
 		List<DeliveryAddresses> list = new ArrayList<>();
@@ -83,6 +82,18 @@ public class RestaurantsService {
 		return restaurant.getMenuitems();
 	}
 	
+	// method to add menu item for a specific restaurant
+	public void addMenuItemInSpecificRestaurant(int restaurant_id, MenuItems menuItem) {
+		Restaurants restaurant = restaurants_repository.findById(restaurant_id).orElse(null);
+		if(restaurant != null) {
+			menuItem.setRestaurants(restaurant);
+			restaurant.getMenuitems().add(menuItem);
+			restaurants_repository.save(restaurant);
+		}
+		else {
+			throw new RestaurantNotFoundException("Restaurant not found with id: " +restaurant_id);
+		}
+
 	public Restaurants saveRestaurants(Restaurants restaurant) {
 		return restaurants_repository.save(restaurant);
 	}
