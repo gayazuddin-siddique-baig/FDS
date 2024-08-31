@@ -28,7 +28,7 @@ public class RestaurantsService {
 	// method to get all the restaurants
 	public List<Restaurants> getAllRestaurants() {
 		List<Restaurants> restaurants = restaurants_repository.findAll();
-		if(restaurants.isEmpty()) throw new NoRestaurantsFoundException("Restaurants list is empty");
+		if(restaurants.isEmpty()) throw new RestaurantNotFoundException("Restaurants list is empty", "GETALLFAILS");
 		return restaurants;
 	}
 	
@@ -85,6 +85,7 @@ public class RestaurantsService {
 		return ratingList;
 	}
 
+	// method to get all the menu items of the specific restaurant
 	public List<MenuItems> getMenuItemsByRestaurant(int restaurantId) {
 		Restaurants restaurant = restaurants_repository.findById(restaurantId).orElse(null);
 		if(restaurant == null) {

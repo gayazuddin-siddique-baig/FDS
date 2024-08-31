@@ -53,11 +53,10 @@ public class CustomersController {
 //		return new ResponseEntity<SuccessResponse>(response, HttpStatus.OK);
 //	}
 	
+	// method to get all the reviews of the specific customer
 	@RequestMapping(value="/{customerId}/reviews", method=RequestMethod.GET)
-	public ResponseEntity<List<String>> getRatingsCustomer(@PathVariable int customerId){
-		List<String> ratings = customers_service.getRatingsByCustomer(customerId);
-		return new ResponseEntity<>(ratings,HttpStatus.OK);
+	public ResponseEntity<List<String>> getRatingsCustomer(@PathVariable("customerId") int customer_id) {
+		List<String> reviews = customers_service.getRatingsByCustomer(customer_id);
+		return new ResponseEntity<>(reviews, HttpStatus.OK);
 	}
-
-	
 }

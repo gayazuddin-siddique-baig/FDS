@@ -16,13 +16,6 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<ErrorResponse>(error, HttpStatus.NOT_FOUND);
 	}
 	
-	// method to handle NoRestaurantsFoundException
-	@ExceptionHandler(NoRestaurantsFoundException.class)
-	public ResponseEntity<ErrorResponse> handleNoRestaurantsFoundException(NoRestaurantsFoundException e) {
-		ErrorResponse error = new ErrorResponse("GETALLFAILS", e.getMessage());
-		return new ResponseEntity<ErrorResponse>(error, HttpStatus.NOT_FOUND);
-	}
-	
 	// method to handle CustomerNotFoundException
 	@ExceptionHandler(CustomerNotFoundException.class)
 	public ResponseEntity<ErrorResponse> handleCustomerNotFoundException(CustomerNotFoundException e) {
