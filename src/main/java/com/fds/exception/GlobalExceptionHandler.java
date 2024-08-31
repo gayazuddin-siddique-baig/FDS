@@ -17,8 +17,7 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<ErrorResponse>(error, HttpStatus.NOT_FOUND);
 	}
 	
-	
-	
+
 	//<<<<-----------------pankaj
 	//1
 	@ExceptionHandler(CustomerNotFoundException.class)
@@ -35,4 +34,5 @@ public class GlobalExceptionHandler {
 	
 	//2
 	//--------------->>>>
+
 }

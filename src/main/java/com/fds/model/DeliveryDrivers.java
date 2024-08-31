@@ -2,6 +2,7 @@ package com.fds.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
@@ -36,6 +37,7 @@ public class DeliveryDrivers {
 	
 	@OneToMany(mappedBy="deliverydrivers", cascade=CascadeType.ALL)
 	@JsonManagedReference
+	@JsonIgnore
 	private List<Orders> orders;
 
 	// toString()

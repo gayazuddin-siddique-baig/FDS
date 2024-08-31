@@ -8,4 +8,5 @@ import com.fds.model.DeliveryDrivers;
 @Repository
 public interface DeliveryDriversRepository extends JpaRepository<DeliveryDrivers, Integer> {
     // No additional methods needed for now, JpaRepository provides basic CRUD operations
+	
 }
