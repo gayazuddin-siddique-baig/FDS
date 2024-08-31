@@ -27,7 +27,7 @@ public class CustomersController {
 	public ResponseEntity<Customers> getCustomerById(@PathVariable("customerId") int customer_id) {
 		Customers customer = customers_service.getCustomersById(customer_id);
 		if(customer == null) {
-			throw new CustomerNotFoundException("vjhhj");
+			throw new CustomerNotFoundException("Customer with the id : "+customer_id+" dosen't exist.");
 		}
 		return new ResponseEntity<Customers>(customer, HttpStatus.OK);
 	}
@@ -35,6 +35,9 @@ public class CustomersController {
 	@RequestMapping(value="", method=RequestMethod.GET)
 	public ResponseEntity<List<Customers>> getAllCustomer(){
 		List<Customers> customerList = customers_service.getAllCustomers();
+		if(customerList.size() == 0) {
+			throw new CustomerNotFoundException("No Customer exist.");
+		}
 		return new ResponseEntity<List<Customers>>(customerList, HttpStatus.OK);
 	}
 	
@@ -42,6 +45,9 @@ public class CustomersController {
 	@RequestMapping(value="/{customerId}", method=RequestMethod.DELETE)
 	public ResponseEntity<Customers> deleteCustomerById(@PathVariable("customerId") int customer_id) {
 		Customers customer = customers_service.deleteCustomerById(customer_id);
+		if(customer == null) {
+			throw new CustomerNotFoundException("Customer with the id : "+customer_id+" dosen't exist.");
+		}
 		return new ResponseEntity<Customers>(customer, HttpStatus.OK);
 	}
 	

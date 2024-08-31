@@ -28,7 +28,8 @@ public class CustomersService {
 	}
 	
 	public Customers deleteCustomerById(int customer_id) {
-		Customers cust = customers_repository.getCustomersById(customer_id);
+		Customers cust = customers_repository.findById(customer_id).orElse(null);
+		if(cust == null) {return null;}
 		customers_repository.deleteById(customer_id);
 		return cust;
 	}
