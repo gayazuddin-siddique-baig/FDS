@@ -14,4 +14,5 @@ public class GlobalExceptionHandler {
 		ErrorResponse error = new ErrorResponse("ADDFAILS", "Restaurant not found");
 		return new ResponseEntity<ErrorResponse>(error, HttpStatus.NOT_FOUND);
 	}
+	
 }
