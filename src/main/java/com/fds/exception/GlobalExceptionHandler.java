@@ -61,6 +61,11 @@ public class GlobalExceptionHandler {
 	}
 	
 	//5
+	@ExceptionHandler(MenuNotFoundException.class)
+	public ResponseEntity<ErrorResponse> handleMenuNotFoundException(MenuNotFoundException e) {
+		ErrorResponse error = new ErrorResponse(e.getCode(), e.getMessage());
+		return new ResponseEntity<ErrorResponse>(error, HttpStatus.NOT_FOUND);
+	}
 	
 	
 	//---------------end >>>>
