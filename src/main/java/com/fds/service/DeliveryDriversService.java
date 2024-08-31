@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.fds.exception.DriverNotFoundException;
 import com.fds.model.DeliveryDrivers;
 import com.fds.model.Orders;
 import com.fds.repository.DeliveryDriversRepository;
@@ -21,7 +22,11 @@ public class DeliveryDriversService {
     }
     
     public DeliveryDrivers getDriverById(int id) {
-    	return deliveryDriversRepository.findById(id).get();
+    	DeliveryDrivers deliveryDriver= deliveryDriversRepository.findById(id).orElse(null);
+    	if(deliveryDriver == null) {
+			throw new DriverNotFoundException("Driver with id "+id+" dose not exist.");
+		}
+    	return deliveryDriver;
     }
     
 
