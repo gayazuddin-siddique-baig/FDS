@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fds.exception.SuccessResponse;
 import com.fds.model.DeliveryDrivers;
 import com.fds.model.Orders;
 import com.fds.service.DeliveryDriversService;
@@ -31,9 +32,11 @@ public class OrdersController {
 	}
 	
 	@RequestMapping(value="/{orderId}/assignDriver/{driverId}", method=RequestMethod.PUT)
-	public ResponseEntity<DeliveryDrivers> assignDriverById(@PathVariable("orderId") int orderId,@PathVariable("driverId") int driverId){
+	public ResponseEntity<SuccessResponse> assignDriverById(@PathVariable("orderId") int orderId,@PathVariable("driverId") int driverId){
 		DeliveryDrivers deliveryDriver= deliveryDriversService.getDriverById(driverId);
 		DeliveryDrivers updatedDriver=orders_service.updateDriver(deliveryDriver, orderId);
-		return new ResponseEntity<DeliveryDrivers>(updatedDriver, HttpStatus.OK);
+		SuccessResponse response = new SuccessResponse("DELETESUCCESS", "Restaurant deleted successfully");
+		
+		return new ResponseEntity<SuccessResponse>(response, HttpStatus.OK);
 	}
 }

@@ -24,8 +24,12 @@ public class DeliveryDriversService {
     	return deliveryDriversRepository.findById(id).get();
     }
     
+
+    
+
     public List<Orders> getAllOrdersByDriverId(int driverId){
     	DeliveryDrivers driver = getDriverById(driverId);
     	return driver.getOrders();
     }
+
 }
