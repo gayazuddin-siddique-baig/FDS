@@ -95,6 +95,9 @@ public class RestaurantsService {
 		}
 		else {
 			throw new RestaurantNotFoundException("Restaurant not found with id: " +restaurant_id);
+
+		}}
+
 		}
 	}
 

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fds.exception.RestaurantNotFoundException;
 import com.fds.exception.SuccessResponse;
 
 import com.fds.model.MenuItems;
@@ -91,6 +92,9 @@ public class RestaurantsController {
 	@RequestMapping(value="/{restaurantId}", method=RequestMethod.GET)
 	public ResponseEntity<Restaurants> getRestaurantsById(@PathVariable("restaurantId") int restaurant_id) {
 		Restaurants restaurant = restaurants_service.getRestaurantById(restaurant_id);
+		if(restaurant == null) {
+			throw new RestaurantNotFoundException("not found");
+		}
 		return new ResponseEntity<Restaurants>(restaurant, HttpStatus.OK);
 	}
 	

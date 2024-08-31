@@ -2,6 +2,7 @@ package com.fds.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,7 @@ public class CustomersService {
 	private CustomersRepository customers_repository;
 	
 	public Customers getCustomersById(int customer_id) {
-		return customers_repository.getCustomersById(customer_id);
+		return customers_repository.findById(customer_id).orElse(null);
 	}
 	
 	public List<Customers> getAllCustomers(){

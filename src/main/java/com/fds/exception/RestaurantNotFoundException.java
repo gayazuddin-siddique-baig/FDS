@@ -6,3 +6,5 @@ public class RestaurantNotFoundException extends RuntimeException {
 		super(message);
 	}
 }
+
+
