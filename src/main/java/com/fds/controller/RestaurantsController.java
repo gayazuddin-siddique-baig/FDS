@@ -27,7 +27,6 @@ import com.fds.model.Restaurants;
 import com.fds.repository.RestaurantsRepository;
 import com.fds.service.RestaurantsService;
 
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 
@@ -67,7 +66,7 @@ public class RestaurantsController {
   
 	// method to update a specific restaurant
 	@RequestMapping(value="/{restaurantId}", method=RequestMethod.PUT)
-	public ResponseEntity<SuccessResponse> updateRestaurant(@Valid @RequestBody Restaurants newRestaurant, @PathVariable int restaurantId){
+	public ResponseEntity<SuccessResponse> updateRestaurant(@RequestBody Restaurants newRestaurant, @PathVariable int restaurantId){
 		Restaurants updatedRest = restaurants_service.updateRestaurantById(newRestaurant, restaurantId);
 		if(updatedRest == null) {
 			throw new RestaurantNotFoundException("Restaurant with id "+restaurantId+"not found", "PUTFAILS");
