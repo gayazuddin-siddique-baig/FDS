@@ -27,7 +27,6 @@ import com.fds.model.Restaurants;
 import com.fds.repository.RestaurantsRepository;
 import com.fds.service.RestaurantsService;
 
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 
@@ -67,7 +66,7 @@ public class RestaurantsController {
   
 	// method to update a specific restaurant
 	@RequestMapping(value="/{restaurantId}", method=RequestMethod.PUT)
-	public ResponseEntity<SuccessResponse> updateRestaurant(@Valid @RequestBody Restaurants newRestaurant, @PathVariable int restaurantId){
+	public ResponseEntity<SuccessResponse> updateRestaurant(@RequestBody Restaurants newRestaurant, @PathVariable int restaurantId){
 		Restaurants updatedRest = restaurants_service.updateRestaurantById(newRestaurant, restaurantId);
 		if(updatedRest == null) {
 			throw new RestaurantNotFoundException("Restaurant with id "+restaurantId+"not found", "PUTFAILS");
@@ -101,8 +100,9 @@ public class RestaurantsController {
 		return new ResponseEntity<Restaurants>(restaurant, HttpStatus.OK);
 	}
 	
+	// method to create a new restaurant
 	@RequestMapping(value = "", method=RequestMethod.POST)
-	public ResponseEntity<Restaurants> createRestaurant(@RequestBody Restaurants newRestaurant) {
+	public ResponseEntity<Restaurants> createRestaurant(@Valid @RequestBody Restaurants newRestaurant) {
 		Restaurants saved = restaurants_service.saveRestaurants(newRestaurant);
 		return new ResponseEntity<Restaurants>(saved, HttpStatus.CREATED);
 	}
@@ -114,7 +114,7 @@ public class RestaurantsController {
 			throw new RestaurantNotFoundException("Restaurant with id " + restaurantId +" not found", "GETFAILS");
 		}
 		restaurants_service.updateMenuItemOfRestaurant(restaurant, itemId, menuItem);
-		SuccessResponse response = new SuccessResponse("PUTSUCCESS", "MenuItem updated successfully");
+		SuccessResponse response = new SuccessResponse("PUTSUCCESS", "Menu item details updated successfully");
 		return new ResponseEntity<SuccessResponse>(response, HttpStatus.OK);
 	}
 	

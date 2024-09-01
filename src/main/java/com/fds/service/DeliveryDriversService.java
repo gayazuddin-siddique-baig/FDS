@@ -24,7 +24,7 @@ public class DeliveryDriversService {
     public DeliveryDrivers getDriverById(int id) {
     	DeliveryDrivers deliveryDriver= deliveryDriversRepository.findById(id).orElse(null);
     	if(deliveryDriver == null) {
-			throw new DriverNotFoundException("Driver with id "+id+" dose not exist.");
+			throw new DriverNotFoundException("Driver with id "+ id +" does not exist.");
 		}
     	return deliveryDriver;
     }
