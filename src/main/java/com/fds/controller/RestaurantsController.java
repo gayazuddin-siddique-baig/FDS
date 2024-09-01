@@ -101,8 +101,9 @@ public class RestaurantsController {
 		return new ResponseEntity<Restaurants>(restaurant, HttpStatus.OK);
 	}
 	
+	// method to create a new restaurant
 	@RequestMapping(value = "", method=RequestMethod.POST)
-	public ResponseEntity<Restaurants> createRestaurant(@RequestBody Restaurants newRestaurant) {
+	public ResponseEntity<Restaurants> createRestaurant(@Valid @RequestBody Restaurants newRestaurant) {
 		Restaurants saved = restaurants_service.saveRestaurants(newRestaurant);
 		return new ResponseEntity<Restaurants>(saved, HttpStatus.CREATED);
 	}
@@ -114,7 +115,7 @@ public class RestaurantsController {
 			throw new RestaurantNotFoundException("Restaurant with id " + restaurantId +" not found", "GETFAILS");
 		}
 		restaurants_service.updateMenuItemOfRestaurant(restaurant, itemId, menuItem);
-		SuccessResponse response = new SuccessResponse("PUTSUCCESS", "MenuItem updated successfully");
+		SuccessResponse response = new SuccessResponse("PUTSUCCESS", "Menu item details updated successfully");
 		return new ResponseEntity<SuccessResponse>(response, HttpStatus.OK);
 	}
 	
