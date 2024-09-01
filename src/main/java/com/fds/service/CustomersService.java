@@ -50,6 +50,7 @@ public class CustomersService {
 			List<Ratings> ratings = o.getRatings();
 			for(Ratings r : ratings) reviews.add(r.getReview());
 		}
+		
 		return reviews;
 	}
 }
