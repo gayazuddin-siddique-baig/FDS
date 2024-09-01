@@ -11,6 +11,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,7 +28,10 @@ public class Restaurants {
 	@Column(name="restaurant_id")
 	private int restaurant_id;
 	
+	//validation 
 	@Column(name="restaurant_name")
+	@NotEmpty
+	@Size(min =2, message ="Restaurant title should have atleast more than two character")
 	private String restaurant_name;
 	
 	@Column(name="restaurant_address")

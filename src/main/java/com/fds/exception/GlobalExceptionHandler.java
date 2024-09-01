@@ -3,8 +3,11 @@ package com.fds.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -32,12 +35,33 @@ public class GlobalExceptionHandler {
 	
 	
 	//global url not found
+	/*
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ErrorResponse> handleURLNotFoundException(Exception e) {
 		ErrorResponse error = new ErrorResponse("GETFAILS", "Incorrect url");
 		return new ResponseEntity<ErrorResponse>(error, HttpStatus.BAD_REQUEST);
 	}
-
+	
+*/
+	//validation failed exception
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public ResponseEntity<ErrorResponse> handleValidationException(MethodArgumentNotValidException e) {
+		ErrorResponse error = new ErrorResponse("VALIDATIONFAILS", "Please provide the valid data and do not pass empty string");
+		return new ResponseEntity<ErrorResponse>(error, HttpStatus.BAD_REQUEST);
+	}
+	//invalid argument type 
+	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
+	public ResponseEntity<ErrorResponse> handleArgumentMismatchException(MethodArgumentTypeMismatchException e) {
+		ErrorResponse error = new ErrorResponse("VALIDATIONFAILS", "Please provide the valid data type");
+		return new ResponseEntity<ErrorResponse>(error, HttpStatus.EXPECTATION_FAILED);
+	}
+	
+	//invalid method type 
+		@ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+		public ResponseEntity<ErrorResponse> handleMethodNotAllowedException(HttpRequestMethodNotSupportedException e) {
+			ErrorResponse error = new ErrorResponse("VALIDATIONFAILS", "Invalid method type");
+			return new ResponseEntity<ErrorResponse>(error, HttpStatus.BAD_REQUEST);
+		}
 	
 	//3 driver not found
 	@ExceptionHandler(DriverNotFoundException.class)
