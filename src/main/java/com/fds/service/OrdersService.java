@@ -1,9 +1,12 @@
 package com.fds.service;
 
-import java.util.Optional;
+import java.sql.Timestamp;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.fds.dto.OrdersDTO;
 import com.fds.exception.AssingedDriverToOrderException;
 import com.fds.exception.OrderNotFoundException;
 import com.fds.model.DeliveryDrivers;
@@ -17,14 +20,16 @@ public class OrdersService {
 	private OrdersRepository orders_repository;
 	
 	// method to get the specific order
-	public Orders getOrdersById(int order_id) {
-		Orders order= orders_repository.findById(order_id).orElse(null);
-		if(order == null) throw new OrderNotFoundException("No order found with id: " +order_id, "GETFAILS");
-		return order;
+	public OrdersDTO getSpecificOrderById(int order_id) {
+		List<Object[]> orders = orders_repository.getSpecificOrderById(order_id);
+		if (orders.isEmpty()) throw new OrderNotFoundException("No order found with id: " + order_id, "GETFAILS");
+		Object[] order = orders.get(0);
+		OrdersDTO orderdto = new OrdersDTO((int)order[0], ((Timestamp)order[1]).toLocalDateTime(), (int)order[2], (int)order[3], (int)order[4], (String)order[5]);
+		return orderdto;
 	}
 
 	public DeliveryDrivers updateDriver(DeliveryDrivers deliveryDriver, int orderId) {
-		Orders order =getOrdersById(orderId);
+		Orders order = orders_repository.findById(orderId).orElse(null);
 		DeliveryDrivers getOrderDriver = order.getDeliverydrivers();
 		if(getOrderDriver !=null) {
 			throw new AssingedDriverToOrderException("Order has alredy been assigned to an driver");

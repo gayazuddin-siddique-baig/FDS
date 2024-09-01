@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fds.dto.OrdersDTO;
 import com.fds.exception.DriverNotFoundException;
 import com.fds.exception.SuccessResponse;
 import com.fds.model.DeliveryDrivers;
@@ -28,9 +29,9 @@ public class OrdersController {
 	
 	// method to get the specific order
 	@RequestMapping(value="/{orderId}", method=RequestMethod.GET)
-	public ResponseEntity<Orders> getOrdersById(@PathVariable("orderId") int order_id) {
-		Orders order = orders_service.getOrdersById(order_id);
-		return new ResponseEntity<Orders>(order, HttpStatus.OK);
+	public ResponseEntity<OrdersDTO> getSpecificOrderById(@PathVariable("orderId") int order_id) {
+		OrdersDTO orderdto = orders_service.getSpecificOrderById(order_id);
+		return new ResponseEntity<OrdersDTO>(orderdto, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value="/{orderId}/assignDriver/{driverId}", method=RequestMethod.PUT)
