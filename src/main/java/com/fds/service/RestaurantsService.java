@@ -76,7 +76,10 @@ public class RestaurantsService {
 
 	public List<String> getAllRatingsOfRestaurant(int restaurantId) {
 		List<String> ratingList = new ArrayList<>();
-		Restaurants restaurant = restaurants_repository.findById(restaurantId).get();
+		Restaurants restaurant = restaurants_repository.findById(restaurantId).orElse(null);
+		if(restaurant == null) {
+			throw new RestaurantNotFoundException("Restaurant not found with id: " + restaurantId, "GETFAILS");
+		}
 		List<Ratings> ratings= restaurant.getRatings();
 		for(Ratings currRating:ratings) {
 			ratingList.add(currRating.getReview());
