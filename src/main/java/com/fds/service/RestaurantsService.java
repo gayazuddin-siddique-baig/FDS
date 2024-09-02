@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.fds.model.MenuItems;
 import com.fds.exception.MenuNotFoundException;
 import com.fds.exception.OrderNotFoundException;
+import com.fds.exception.RatingsNotFoundException;
 import com.fds.exception.RestaurantNotFoundException;
 import com.fds.model.Customers;
 import com.fds.model.DeliveryAddresses;
@@ -81,29 +82,35 @@ public class RestaurantsService {
 		restaurants_repository.save(restaurant);
 	}
 
-	public List<String> getAllRatingsOfRestaurant(int restaurantId) {
-		List<String> ratingList = new ArrayList<>();
+	// method to get all the ratings of the specific restaurant
+	public List<String> getReviewsOfSpecificRestaurant(int restaurantId) {
+		List<String> reviews = new ArrayList<>();
+		
 		Restaurants restaurant = restaurants_repository.findById(restaurantId).orElse(null);
-		if(restaurant == null) {
-			throw new RestaurantNotFoundException("Restaurant not found with id: " + restaurantId, "GETFAILS");
-		}
-		List<Ratings> ratings= restaurant.getRatings();
-		for(Ratings currRating:ratings) {
-			ratingList.add(currRating.getReview());
-		}
-		if(ratingList.isEmpty()) {
-			throw new MenuNotFoundException("No review is found with the specific Restaurant Id: " + restaurantId, "GETFAILS");
-		}
-		return ratingList;
+		// throw exception if the restaurant is not found
+		if(restaurant == null) throw new RestaurantNotFoundException("Restaurant not found with id: " + restaurantId, "GETALLFAILS");
+		
+		List<Ratings> ratings = restaurant.getRatings();
+		// throw exception if ratings list is empty
+		if(ratings.isEmpty()) throw new RatingsNotFoundException("Ratings list is empty", "GETALLFAILS");
+		
+		for(Ratings rating : ratings) reviews.add(rating.getReview());
+		
+		return reviews;
 	}
 
 	// method to get all the menu items of the specific restaurant
 	public List<MenuItems> getMenuItemsByRestaurant(int restaurantId) {
 		Restaurants restaurant = restaurants_repository.findById(restaurantId).orElse(null);
-		if(restaurant == null) {
-			throw new RestaurantNotFoundException("Restaurant not found with id: " +restaurantId, "GETFAILS");
-		}
-		return restaurant.getMenuitems();
+		
+		// throw exception if the restaurant is not found
+		if(restaurant == null) throw new RestaurantNotFoundException("Restaurant not found with id: " +restaurantId, "GETALLFAILS");
+		
+		List<MenuItems> menuitems = restaurant.getMenuitems();
+		// throw exception if the menu items list is empty
+		if(menuitems.isEmpty()) throw new MenuNotFoundException("Menu items list is empty", "GETALLFAILS");
+		
+		return menuitems;
 	}
 	
 	// method to add menu item for the specific restaurant
@@ -118,35 +125,34 @@ public class RestaurantsService {
 		restaurants_repository.save(restaurant);
 	}
 
-	public Restaurants saveRestaurants(Restaurants restaurant) {
-		return restaurants_repository.save(restaurant);
+	// method to add a new restaurant
+	public void addRestaurant(Restaurants restaurant) {
+		restaurants_repository.save(restaurant);
 	}
 
-	public void updateMenuItemOfRestaurant(Restaurants restaurant, int itemId, MenuItems menuItem) {
+	// method to update specific menu items of the specific restaurant
+	public void updateMenuItemOfRestaurant(int restaurant_id, int itemId, MenuItems menuItem) {
+		Restaurants restaurant = restaurants_repository.findById(restaurant_id).orElse(null);
+		// throw exception if the restaurant is not found
+		if(restaurant == null) throw new RestaurantNotFoundException("Restaurant not found with id: " +restaurant_id, "UPDATEFAILS");
+		
 		List<MenuItems> menuItems = restaurant.getMenuitems();
+		// throw exception if the menu items is empty
+		if(menuItems.isEmpty()) throw new MenuNotFoundException("Menu items list is empty", "UPDATEFAILS");
+		
 		boolean found = false;
-		for(MenuItems m: menuItems) {
+		for(MenuItems m : menuItems) {
 			if(m.getItem_id() == itemId) {
-				if(menuItem.getItem_name() != null) {
-					m.setItem_name(menuItem.getItem_name());					
-				}
+				if(menuItem.getItem_name() != null) m.setItem_name(menuItem.getItem_name());					
+				if(menuItem.getItem_description() != null) m.setItem_description(menuItem.getItem_description());					
+				if(menuItem.getItem_price() != null) m.setItem_price(menuItem.getItem_price());
 				
-				if(menuItem.getItem_description() != null) {
-					m.setItem_description(menuItem.getItem_description());					
-				}
-				
-				if(menuItem.getItem_price() != null) {
-					m.setItem_price(menuItem.getItem_price());					
-				}
 				restaurants_repository.save(restaurant);
 				found = true;
 				break;
 			}
 		}
 		
-		if(!found) {
-			throw new MenuNotFoundException("MenuItem of Id: " + itemId + " not found", "PUTFAILS");
-		}
+		if(!found) throw new MenuNotFoundException("Menu item not found with id: " +itemId, "UPDATEFAILS");
 	}
-
 }

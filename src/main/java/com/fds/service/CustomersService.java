@@ -50,6 +50,7 @@ public class CustomersService {
 		List<String> reviews = new ArrayList<>();
 		
 		Customers customer = customers_repository.findById(customer_id).orElse(null);
+		// throw an exception if the customer is not found
 		if(customer == null) throw new CustomerNotFoundException("Customer not found with id: " +customer_id, "GETALLFAILS");
 		
 		List<Orders> orders = customer.getOrders();
@@ -64,15 +65,12 @@ public class CustomersService {
 		return reviews;
 	}
 	
-	// method to get favrite restaurant of a customer
+	// method to get the favourite restaurant of the specific customer
 	public Restaurants getFavouriteRestaurantOfCustomer(int customerId) {
 		Customers customer = customers_repository.findById(customerId).orElse(null);
-		if(customer == null) {
-			throw new CustomerNotFoundException("No customer found with id: " + customerId, "GETFAILS");
-		}
+		if(customer == null) throw new CustomerNotFoundException("No customer found with id: " + customerId, "GETFAILS");
 		return restaurants_repository.getFavouriteRestaurantOfCustomer(customerId);
 	}
-
 
 	// method to delete the specific customer
 	public void deleteSpecificCustomerById(int customer_id) {

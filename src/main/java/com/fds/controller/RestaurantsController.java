@@ -55,7 +55,7 @@ public class RestaurantsController {
 	// method to get all the reviews of a specific restaurant
 	@RequestMapping(value="/{restaurantId}/reviews", method=RequestMethod.GET)
 	public ResponseEntity<List<String>> getAllRatingsOfRestaurant(@PathVariable("restaurantId") int restaurantId) {
-		return new ResponseEntity<List<String>>(restaurants_service.getAllRatingsOfRestaurant(restaurantId), HttpStatus.OK);
+		return new ResponseEntity<List<String>>(restaurants_service.getReviewsOfSpecificRestaurant(restaurantId), HttpStatus.OK);
 	}
 	
 	// method to get all the delivery areas of the specific restaurant
@@ -100,22 +100,17 @@ public class RestaurantsController {
 	
 	// method to create a new restaurant
 	@RequestMapping(value = "", method=RequestMethod.POST)
-	public ResponseEntity<Restaurants> createRestaurant(@Valid @RequestBody Restaurants newRestaurant) {
-		Restaurants saved = restaurants_service.saveRestaurants(newRestaurant);
-		return new ResponseEntity<Restaurants>(saved, HttpStatus.CREATED);
+	public ResponseEntity<SuccessResponse> createRestaurant(@RequestBody Restaurants newRestaurant) {
+		restaurants_service.addRestaurant(newRestaurant);
+		SuccessResponse success = new SuccessResponse("POSTSUCCESS", "Restaurant added successfully");
+		return new ResponseEntity<SuccessResponse>(success, HttpStatus.CREATED);
 	}
 	
 	// method to update details of a specific menuItem of a restaurant
 	@RequestMapping(value = "/{restaurantId}/menu/{itemId}", method=RequestMethod.PUT)
 	public ResponseEntity<SuccessResponse> updateMenuItemOfRestaurant(@RequestBody MenuItems menuItem, @PathVariable("restaurantId") int restaurantId, @PathVariable("itemId") int itemId) {
-		Restaurants restaurant = restaurants_service.getRestaurantById(restaurantId);
-		if(restaurant == null) {
-			throw new RestaurantNotFoundException("Restaurant with id " + restaurantId +" not found", "GETFAILS");
-		}
-		restaurants_service.updateMenuItemOfRestaurant(restaurant, itemId, menuItem);
-		SuccessResponse response = new SuccessResponse("PUTSUCCESS", "Menu item details updated successfully");
+		restaurants_service.updateMenuItemOfRestaurant(restaurantId, itemId, menuItem);
+		SuccessResponse response = new SuccessResponse("UPDATESUCCESS", "Menu item details updated successfully");
 		return new ResponseEntity<SuccessResponse>(response, HttpStatus.OK);
 	}
-	
 }
-

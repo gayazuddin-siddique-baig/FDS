@@ -51,6 +51,7 @@ public class OrdersController {
 		SuccessResponse success = new SuccessResponse("DELETESUCCESS", "Order deleted successfully");
 		return new ResponseEntity<SuccessResponse>(success, HttpStatus.OK);
 	}
+	
 	//method to update the status of a specific order
 	@RequestMapping(value="/{orderId}/status", method=RequestMethod.PUT)
     public ResponseEntity<SuccessResponse> updateOrderStatus(@PathVariable("orderId") int order_id, @RequestParam("status") String status) {
@@ -58,7 +59,4 @@ public class OrdersController {
         SuccessResponse success = new SuccessResponse("UPDATESUCCESS", "Order status updated successfully");
         return new ResponseEntity<>(success, HttpStatus.OK);
     }
-
-	
-
 }

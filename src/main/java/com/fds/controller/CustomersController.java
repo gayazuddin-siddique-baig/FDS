@@ -54,10 +54,10 @@ public class CustomersController {
 		return new ResponseEntity<>(reviews, HttpStatus.OK);
 	}
 	
+	// method to get the favourite restaurant of the specific customer
 	@RequestMapping(value="/{customerId}/favorites", method=RequestMethod.GET)
 	public ResponseEntity<Restaurants> getCustomerFavouriteRestaurant(@PathVariable("customerId") int customerId){
 		Restaurants restaurant = customers_service.getFavouriteRestaurantOfCustomer(customerId);
 		return new ResponseEntity<Restaurants>(restaurant,HttpStatus.OK);
 	}
-
 }
