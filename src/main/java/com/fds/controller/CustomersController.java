@@ -27,7 +27,7 @@ public class CustomersController {
 	
 	@RequestMapping(value="/{customerId}", method=RequestMethod.GET)
 	public ResponseEntity<Customers> getCustomerById(@PathVariable("customerId") int customer_id) {
-		Customers customer = customers_service.getCustomersById(customer_id);
+		Customers customer = customers_service.getSpecificCustomerById(customer_id);
 		return new ResponseEntity<Customers>(customer, HttpStatus.OK);
 	}
 	
@@ -56,7 +56,7 @@ public class CustomersController {
 	// method to get all the reviews of the specific customer
 	@RequestMapping(value="/{customerId}/reviews", method=RequestMethod.GET)
 	public ResponseEntity<List<String>> getRatingsCustomer(@PathVariable("customerId") int customer_id) {
-		List<String> reviews = customers_service.getRatingsByCustomer(customer_id);
+		List<String> reviews = customers_service.getReviewsOfSpecificCustomer(customer_id);
 		return new ResponseEntity<>(reviews, HttpStatus.OK);
 	}
 }
