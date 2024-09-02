@@ -51,18 +51,20 @@ public class OrdersService {
 	// method to delete the specific order
 	public void deleteSpecificOrder(int order_id) {
 		Orders order = orders_repository.findById(order_id).orElse(null);
+		
+		// throw an exception if the order is not found
 		if(order == null) throw new OrderNotFoundException("Order doesn't exist with id: " +order_id, "DELETEFAILS");
 		orders_repository.deleteById(order_id);
 	}
 	
-
+	// method to update the status of the specific order
 	public void updateOrderStatus(int order_id, String status) {
         Orders order = orders_repository.findById(order_id).orElse(null);
         
+        // throw exception if the order is not found
         if(order == null) throw new OrderNotFoundException("Order not found with id: " +order_id, "UPDATEFAILS");
        
-    	order.setOrder_status(status);;
+    	order.setOrder_status(status);
     	orders_repository.save(order);
 	}
-
 }

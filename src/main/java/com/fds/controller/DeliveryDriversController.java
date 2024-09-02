@@ -35,12 +35,14 @@ public class DeliveryDriversController {
     }
     
 
-    @GetMapping("/{driverId}")
-    public ResponseEntity<DeliveryDrivers> getDriverById(@PathVariable int driverId){
+    // method to get the specific delivery driver
+    @RequestMapping(value="/{driverId}", method=RequestMethod.GET)
+    public ResponseEntity<DeliveryDrivers> getDriverById(@PathVariable("driverId") int driverId){
     	DeliveryDrivers driver = deliveryDriversService.getSpecificDeliveryDriverById(driverId);
     	return new ResponseEntity<>(driver,HttpStatus.OK);
     }
 
+    // 
     @RequestMapping(value="/{driverId}/orders", method=RequestMethod.GET)
     public ResponseEntity<List<Orders>> getAllOrdersByDriverId(@PathVariable("driverId") int driverId) {
         List<Orders> orders = deliveryDriversService.getOrdersofSpecificDeliveryDriver(driverId);
