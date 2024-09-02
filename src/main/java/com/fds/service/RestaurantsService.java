@@ -39,8 +39,26 @@ public class RestaurantsService {
 	}
 
 	public Restaurants getRestaurantById(int restaurantId){
-		return restaurants_repository.findById(restaurantId).orElse(null);
+		Restaurants restaurant= restaurants_repository.findById(restaurantId).orElse(null);
+		if(restaurant == null) throw new RestaurantNotFoundException("Restaurant doesn't exist with id: " +restaurantId, "DELETEFAILS");
+		restaurants_repository.deleteById(restaurantId);
+		return restaurant;
 	}
+	
+	//delete a sspecific restaurant 
+	
+	public void deleteMenuItemFromRestaurant(int restaurantId, int itemId) {
+	    Restaurants restaurant = restaurants_repository.findById(restaurantId).orElse(null);
+	    Restaurants restaurantItem = restaurants_repository.findById(itemId).orElse(null);
+//	    if (restaurant != null) {
+//	        List<MenuItems> menuItems = restaurant.getMenuItems();
+//	        menuItems.removeIf(item -> item.getItemId() == itemId);
+//	        restaurants_repository.save(restaurant);
+//	    }
+	    
+	    if(restaurantItem == null) throw new MenuNotFoundException("Menu doesn't exist with id: " +itemId, "PUTFAILS");
+	}
+	
 	
 	public List<DeliveryAddresses> getDeliveryAddresses(int restaurantId) {
 		Optional<Restaurants> rs = restaurants_repository.findById(restaurantId);

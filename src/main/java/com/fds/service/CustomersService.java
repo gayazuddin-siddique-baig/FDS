@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.fds.exception.CustomerNotFoundException;
@@ -27,6 +29,23 @@ public class CustomersService {
 		if(customer == null) throw new CustomerNotFoundException("No customer found with id: " +customer_id, "GETFAILS");
 		return customer;
 	}
+	
+	//update deatails for specific customer
+	public Customers updateCustomerById(int customer_id, Customers updatedCustomer) {
+	    Customers customer = customers_repository.findById(customer_id).orElse(null);
+	    if (customer != null) {
+	        // Update the existing customer's details with the new details
+	        customer.setCustomer_name(updatedCustomer.getCustomer_name());
+	       customer.setCustomer_email(updatedCustomer.getCustomer_email());
+	        customer.setCustomer_phone(updatedCustomer.getCustomer_phone());
+	        // Add more fields as needed
+	        customers_repository.save(customer);
+	    }
+	    if(customer == null) throw new CustomerNotFoundException("No customer found with id: " +customer_id, "GETFAILS");
+		return customer;
+	}
+	
+
 	
 	public List<Customers> getAllCustomers(){
 		return customers_repository.findAll();
@@ -53,4 +72,16 @@ public class CustomersService {
 		
 		return reviews;
 	}
+	
+	public List<Orders> getAllOrdersByCustomerId(int customerId) {
+        Customers customer = customers_repository.findById(customerId).orElse(null);
+        if(customer == null) throw new CustomerNotFoundException("No customer found with id: " +customerId, "GETFAILS");
+        List<Orders> orders = customer.getOrders();
+        return orders;
+        
+        /*
+         * 
+         */
+    }
+
 }

@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fds.exception.CustomerNotFoundException;
 import com.fds.exception.SuccessResponse;
 import com.fds.model.Customers;
+import com.fds.model.Orders;
 import com.fds.service.CustomersService;
 
 import lombok.AllArgsConstructor;
@@ -52,11 +54,34 @@ public class CustomersController {
 //		
 //		return new ResponseEntity<SuccessResponse>(response, HttpStatus.OK);
 //	}
+	// method to update a specific customer
+    @RequestMapping(value="/{customerId}", method=RequestMethod.PUT)
+    public ResponseEntity<SuccessResponse> updateCustomerById(
+            @PathVariable("customerId") int customer_id, 
+            @RequestBody Customers updatedCustomer) {
+        customers_service.updateCustomerById(customer_id, updatedCustomer);
+        SuccessResponse response = new SuccessResponse("UPDATESUCCESS", "Customer details updated successfully");
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+	//Retrieve all orders by specific customer
 	
+	@RequestMapping(value="/{customerId}/orders", method=RequestMethod.GET)
+    public ResponseEntity<List<Orders>> getAllOrdersByCustomerId(@PathVariable("customerId") int customerId) {
+        List<Orders> orders = customers_service.getAllOrdersByCustomerId(customerId);
+        return new ResponseEntity<>(orders, HttpStatus.OK);
+    }
+
 	// method to get all the reviews of the specific customer
 	@RequestMapping(value="/{customerId}/reviews", method=RequestMethod.GET)
 	public ResponseEntity<List<String>> getRatingsCustomer(@PathVariable("customerId") int customer_id) {
 		List<String> reviews = customers_service.getRatingsByCustomer(customer_id);
 		return new ResponseEntity<>(reviews, HttpStatus.OK);
 	}
+	
+	
+	
+
 }
+	
+
