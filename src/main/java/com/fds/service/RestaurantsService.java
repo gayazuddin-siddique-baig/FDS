@@ -84,6 +84,9 @@ public class RestaurantsService {
 		for(Ratings currRating:ratings) {
 			ratingList.add(currRating.getReview());
 		}
+		if(ratingList.isEmpty()) {
+			throw new MenuNotFoundException("No review is found with the specific Restaurant Id: " + restaurantId, "GETFAILS");
+		}
 		return ratingList;
 	}
 
