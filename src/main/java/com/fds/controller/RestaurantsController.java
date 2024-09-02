@@ -108,6 +108,7 @@ public class RestaurantsController {
 		return new ResponseEntity<Restaurants>(saved, HttpStatus.CREATED);
 	}
 	
+	// method to update details of a specific menuItem of a restaurant
 	@RequestMapping(value = "/{restaurantId}/menu/{itemId}", method=RequestMethod.PUT)
 	public ResponseEntity<SuccessResponse> updateMenuItemOfRestaurant(@RequestBody MenuItems menuItem, @PathVariable("restaurantId") int restaurantId, @PathVariable("itemId") int itemId) {
 		Restaurants restaurant = restaurants_service.getRestaurantById(restaurantId);
