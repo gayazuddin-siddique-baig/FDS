@@ -56,4 +56,15 @@ public class OrdersService {
 		if(order == null) throw new OrderNotFoundException("Order doesn't exist with id: " +order_id, "DELETEFAILS");
 		orders_repository.deleteById(order_id);
 	}
+	
+
+	public void updateOrderStatus(int order_id, String status) {
+        Orders order = orders_repository.findById(order_id).orElse(null);
+        
+        if(order == null) throw new OrderNotFoundException("Order not found with id: " +order_id, "UPDATEFAILS");
+       
+    	order.setOrder_status(status);;
+    	orders_repository.save(order);
+	}
+
 }

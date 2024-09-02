@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fds.dto.OrdersDTO;
@@ -50,6 +51,14 @@ public class OrdersController {
 		SuccessResponse success = new SuccessResponse("DELETESUCCESS", "Order deleted successfully");
 		return new ResponseEntity<SuccessResponse>(success, HttpStatus.OK);
 	}
+	//method to update the status of a specific order
+	@RequestMapping(value="/{orderId}/status", method=RequestMethod.PUT)
+    public ResponseEntity<SuccessResponse> updateOrderStatus(@PathVariable("orderId") int order_id, @RequestParam("status") String status) {
+        orders_service.updateOrderStatus(order_id, status);
+        SuccessResponse success = new SuccessResponse("UPDATESUCCESS", "Order status updated successfully");
+        return new ResponseEntity<>(success, HttpStatus.OK);
+    }
+
 	
 
 }
