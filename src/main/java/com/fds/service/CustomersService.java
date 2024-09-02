@@ -6,16 +6,22 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 import com.fds.exception.CustomerNotFoundException;
 import com.fds.exception.OrderNotFoundException;
 import com.fds.model.Customers;
 import com.fds.model.Orders;
 import com.fds.model.Ratings;
+import com.fds.model.Restaurants;
 import com.fds.repository.CustomersRepository;
+import com.fds.repository.RestaurantsRepository;
 
 @Service
 public class CustomersService {
-	
+
+	@Autowired
+	private RestaurantsRepository restaurants_repository;
+
 	@Autowired
 	private CustomersRepository customers_repository;
 	
@@ -53,6 +59,16 @@ public class CustomersService {
 		return reviews;
 	}
 	
+	// method to get favrite restaurant of a customer
+	public Restaurants getFavouriteRestaurantOfCustomer(int customerId) {
+		Customers customer = customers_repository.findById(customerId).orElse(null);
+		if(customer == null) {
+			throw new CustomerNotFoundException("No customer found with id: " + customerId, "GETFAILS");
+		}
+		return restaurants_repository.getFavouriteRestaurantOfCustomer(customerId);
+	}
+
+
 	// method to delete the specific customer
 	public void deleteSpecificCustomerById(int customer_id) {
 		Customers customer = customers_repository.findById(customer_id).orElse(null);

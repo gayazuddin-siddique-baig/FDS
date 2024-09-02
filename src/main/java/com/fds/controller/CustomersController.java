@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-
 import com.fds.exception.CustomerNotFoundException;
 import com.fds.exception.SuccessResponse;
 import com.fds.model.Customers;
+import com.fds.model.Restaurants;
 import com.fds.service.CustomersService;
 
 import lombok.AllArgsConstructor;
@@ -59,4 +59,11 @@ public class CustomersController {
 		List<String> reviews = customers_service.getReviewsOfSpecificCustomer(customer_id);
 		return new ResponseEntity<>(reviews, HttpStatus.OK);
 	}
+	
+	@RequestMapping(value="/{customerId}/favorites", method=RequestMethod.GET)
+	public ResponseEntity<Restaurants> getCustomerFavouriteRestaurant(@PathVariable("customerId") int customerId){
+		Restaurants restaurant = customers_service.getFavouriteRestaurantOfCustomer(customerId);
+		return new ResponseEntity<Restaurants>(restaurant,HttpStatus.OK);
+	}
+
 }
