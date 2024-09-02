@@ -19,6 +19,10 @@ public class OrdersService {
 	@Autowired
 	private OrdersRepository orders_repository;
 	
+	public Orders saveOrder(Orders newOrder) {
+	    return orders_repository.save(newOrder);
+	}
+
 	// method to get the specific order
 	public OrdersDTO getSpecificOrderById(int order_id) {
 		List<Object[]> orders = orders_repository.getSpecificOrderById(order_id);

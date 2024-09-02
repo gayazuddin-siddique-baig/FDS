@@ -46,9 +46,40 @@ public class RestaurantsService {
 	}
 
 	public Restaurants getRestaurantById(int restaurantId){
-		return restaurants_repository.findById(restaurantId).orElse(null);
+		Restaurants restaurant= restaurants_repository.findById(restaurantId).orElse(null);
+		if(restaurant == null) throw new RestaurantNotFoundException("Restaurant doesn't exist with id: " +restaurantId, "DELETEFAILS");
+		restaurants_repository.deleteById(restaurantId);
+		return restaurant;
+	}
+
+	//delete a specific restaurant 
+	
+	public void deleteMenuItemFromRestaurant(int restaurantId, int itemId) {
+	    Restaurants restaurant = restaurants_repository.findById(restaurantId).orElse(null);
+	    Restaurants restaurantItem = restaurants_repository.findById(itemId).orElse(null);
+//	    if (restaurant != null) {
+//	        List<MenuItems> menuItems = restaurant.getMenuItems();
+//	        menuItems.removeIf(item -> item.getItemId() == itemId);
+//	        restaurants_repository.save(restaurant);
+//	    }
+	    
+	    if(restaurantItem == null) throw new MenuNotFoundException("Menu doesn't exist with id: " +itemId, "PUTFAILS");
 	}
 	
+	
+	public List<DeliveryAddresses> getDeliveryAddresses(int restaurantId) {
+		Optional<Restaurants> rs = restaurants_repository.findById(restaurantId);
+		List<DeliveryAddresses> list = new ArrayList<>();
+		if(rs.isPresent()) {
+			Restaurants restaurant = rs.get();
+			
+			for(Orders order:restaurant.getOrders()) {
+				
+				for(DeliveryAddresses address: order.getCustomers().getDeliveryaddresses()) {
+					list.add(address);
+				}
+			}
+
 	// method to get all the delivery areas served by the specific restaurant
 	public List<DeliveryAddresses> getDeliveryAddressesOfSpecificRestaurant(int restaurant_id) {
 		List<DeliveryAddresses> addresses = new ArrayList<>();
@@ -56,6 +87,7 @@ public class RestaurantsService {
 		Restaurants restaurant = restaurants_repository.findById(restaurant_id).orElse(null);
 		// throw exception if the restaurant is not found
 		if(restaurant == null) throw new RestaurantNotFoundException("Restaurant not found with id: " +restaurant_id, "GETALLFAILS");
+
 			
 		List<Orders> orders = restaurant.getOrders();
 		// throw exception if orders list is empty

@@ -113,4 +113,17 @@ public class RestaurantsController {
 		SuccessResponse response = new SuccessResponse("UPDATESUCCESS", "Menu item details updated successfully");
 		return new ResponseEntity<SuccessResponse>(response, HttpStatus.OK);
 	}
+
+	
+	// Method to delete a specific menu item from a restaurant
+		@RequestMapping(value="/{restaurantId}/menu/{itemId}", method=RequestMethod.DELETE)
+		public ResponseEntity<SuccessResponse> deleteMenuItemFromRestaurant(
+		        @PathVariable("restaurantId") int restaurantId,
+		        @PathVariable("itemId") int itemId) {
+		    restaurants_service.deleteMenuItemFromRestaurant(restaurantId, itemId);
+		    SuccessResponse response = new SuccessResponse("DELETESUCCESS", "Menu item deleted successfully");
+		    return new ResponseEntity<>(response, HttpStatus.OK);
+		}
+	
+}
 }

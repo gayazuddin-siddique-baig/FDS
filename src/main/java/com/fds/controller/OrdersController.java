@@ -44,6 +44,22 @@ public class OrdersController {
 		return new ResponseEntity<SuccessResponse>(response, HttpStatus.OK);
 	}
 	
+	// method to place a new order
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    public ResponseEntity<SuccessResponse> placeOrder(@RequestBody OrdersDTO ordersDTO) {
+        Orders order = new Orders();
+        order.setOrder_id(ordersDTO.getOrder_id());
+        order.setOrder_date(ordersDTO.getOrder_date());
+        // Set other fields and relationships as necessary
+        // Assuming the existence of a method to handle setting relationships or additional logic
+
+        // Call to the OrdersService to save the order
+        Orders savedOrder = orders_service.saveOrder(order);
+
+        SuccessResponse response = new SuccessResponse("POSTSUCCESS", "Order placed successfully");
+        return new ResponseEntity<SuccessResponse>(response, HttpStatus.CREATED);
+    }
+	
 	// method to delete the specific order
 	@RequestMapping(value="/{orderId}", method=RequestMethod.DELETE)
 	public ResponseEntity<SuccessResponse> deleteSpecificOrder(@PathVariable("orderId") int order_id) {
