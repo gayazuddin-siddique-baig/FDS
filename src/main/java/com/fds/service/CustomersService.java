@@ -2,13 +2,8 @@ package com.fds.service;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-
 import com.fds.exception.CustomerNotFoundException;
 import com.fds.exception.OrderNotFoundException;
 import com.fds.model.Customers;
@@ -26,16 +21,6 @@ public class CustomersService {
 
 	@Autowired
 	private CustomersRepository customers_repository;
-	
-	// method to get all the customers
-	public List<Customers> getAllCustomers() {
-		List<Customers> customers = customers_repository.findAll();
-		
-		// throw exception if no customer is found
-		if(customers.isEmpty()) throw new CustomerNotFoundException("Customers list is empty", "GETALLFAILS");
-		
-		return customers;
-	}
 	
 	// method to get the specific customer
 	public Customers getSpecificCustomerById(int customer_id) {

@@ -4,31 +4,18 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.fds.exception.RestaurantNotFoundException;
 import com.fds.exception.SuccessResponse;
-
 import com.fds.model.MenuItems;
-
-
-import com.fds.model.Ratings;
 import com.fds.model.DeliveryAddresses;
-import com.fds.model.DeliveryDrivers;
 import com.fds.model.Restaurants;
-import com.fds.repository.RestaurantsRepository;
 import com.fds.service.RestaurantsService;
-
-import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
 
 
 @RestController
@@ -92,9 +79,6 @@ public class RestaurantsController {
 	@RequestMapping(value="/{restaurantId}", method=RequestMethod.GET)
 	public ResponseEntity<Restaurants> getRestaurantsById(@PathVariable("restaurantId") int restaurant_id) {
 		Restaurants restaurant = restaurants_service.getRestaurantById(restaurant_id);
-		if(restaurant == null) {
-			throw new RestaurantNotFoundException("Restaurant with id "+restaurant_id+"not found", "GETFAILS");
-		}
 		return new ResponseEntity<Restaurants>(restaurant, HttpStatus.OK);
 	}
 	
@@ -126,4 +110,4 @@ public class RestaurantsController {
 		}
 	
 }
-}
+

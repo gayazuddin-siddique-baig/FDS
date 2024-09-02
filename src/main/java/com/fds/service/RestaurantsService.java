@@ -2,22 +2,18 @@ package com.fds.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.fds.model.MenuItems;
 import com.fds.exception.MenuNotFoundException;
 import com.fds.exception.OrderNotFoundException;
 import com.fds.exception.RatingsNotFoundException;
 import com.fds.exception.RestaurantNotFoundException;
-import com.fds.model.Customers;
 import com.fds.model.DeliveryAddresses;
-import com.fds.model.DeliveryDrivers;
 import com.fds.model.Orders;
 import com.fds.model.Ratings;
 import com.fds.model.Restaurants;
+import com.fds.repository.MenuItemRepository;
 import com.fds.repository.RestaurantsRepository;
 
 @Service
@@ -25,6 +21,10 @@ public class RestaurantsService {
 
 	@Autowired
 	private RestaurantsRepository restaurants_repository;
+	
+	@Autowired
+	private MenuItemRepository menu_repository;
+
 	
 	// method to get all the restaurants
 	public List<Restaurants> getAllRestaurants() {
@@ -45,49 +45,33 @@ public class RestaurantsService {
 		restaurants_repository.deleteById(restaurant_id);
 	}
 
+	//get restaurant by id
 	public Restaurants getRestaurantById(int restaurantId){
 		Restaurants restaurant= restaurants_repository.findById(restaurantId).orElse(null);
-		if(restaurant == null) throw new RestaurantNotFoundException("Restaurant doesn't exist with id: " +restaurantId, "DELETEFAILS");
+		if(restaurant == null) throw new RestaurantNotFoundException("Restaurant doesn't exist with id: " +restaurantId, "GETFAILS");
 		restaurants_repository.deleteById(restaurantId);
 		return restaurant;
 	}
 
-	//delete a specific restaurant 
-	
+	//delete a specific restaurant menu item
 	public void deleteMenuItemFromRestaurant(int restaurantId, int itemId) {
-	    Restaurants restaurant = restaurants_repository.findById(restaurantId).orElse(null);
-	    Restaurants restaurantItem = restaurants_repository.findById(itemId).orElse(null);
-//	    if (restaurant != null) {
-//	        List<MenuItems> menuItems = restaurant.getMenuItems();
-//	        menuItems.removeIf(item -> item.getItemId() == itemId);
-//	        restaurants_repository.save(restaurant);
-//	    }
-	    
-	    if(restaurantItem == null) throw new MenuNotFoundException("Menu doesn't exist with id: " +itemId, "PUTFAILS");
+		Restaurants restaurant= restaurants_repository.findById(restaurantId).orElse(null);
+		if(restaurant == null) throw new RestaurantNotFoundException("Restaurant doesn't exist with id: " +restaurantId, "GETFAILS");
+	
+	    MenuItems currItem= menu_repository.findById(itemId).orElse(null);
+	    if(currItem ==null) throw new MenuNotFoundException("Menu items list is empty", "GETALLFAILS");
+	    currItem.setRestaurants(null);
+	 
+	   menu_repository.save(currItem);
 	}
 	
 	
-	public List<DeliveryAddresses> getDeliveryAddresses(int restaurantId) {
-		Optional<Restaurants> rs = restaurants_repository.findById(restaurantId);
-		List<DeliveryAddresses> list = new ArrayList<>();
-		if(rs.isPresent()) {
-			Restaurants restaurant = rs.get();
-			
-			for(Orders order:restaurant.getOrders()) {
-				
-				for(DeliveryAddresses address: order.getCustomers().getDeliveryaddresses()) {
-					list.add(address);
-				}
-			}
-
 	// method to get all the delivery areas served by the specific restaurant
 	public List<DeliveryAddresses> getDeliveryAddressesOfSpecificRestaurant(int restaurant_id) {
-		List<DeliveryAddresses> addresses = new ArrayList<>();
-		
+		List<DeliveryAddresses> addresses = new ArrayList<>();		
 		Restaurants restaurant = restaurants_repository.findById(restaurant_id).orElse(null);
 		// throw exception if the restaurant is not found
 		if(restaurant == null) throw new RestaurantNotFoundException("Restaurant not found with id: " +restaurant_id, "GETALLFAILS");
-
 			
 		List<Orders> orders = restaurant.getOrders();
 		// throw exception if orders list is empty
@@ -95,8 +79,7 @@ public class RestaurantsService {
 		
 		for(Orders order : orders) {
 			for(DeliveryAddresses address : order.getCustomers().getDeliveryaddresses()) addresses.add(address);
-		}
-			
+		}	
 		return addresses;
 	}
 	

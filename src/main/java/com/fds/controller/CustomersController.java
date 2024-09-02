@@ -1,30 +1,25 @@
 package com.fds.controller;
 
 import java.util.List;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.fds.exception.CustomerNotFoundException;
 import com.fds.exception.SuccessResponse;
 import com.fds.model.Customers;
 import com.fds.model.Orders;
 import com.fds.model.Restaurants;
 import com.fds.service.CustomersService;
 
-import lombok.AllArgsConstructor;
-
 @RestController
-@AllArgsConstructor
+
 @RequestMapping("/api/customers")
 public class CustomersController {
-
+	@Autowired
 	private CustomersService customers_service;
 	
 	// method to get the specific customer
@@ -74,7 +69,7 @@ public class CustomersController {
 		List<String> reviews = customers_service.getReviewsOfSpecificCustomer(customer_id);
 		return new ResponseEntity<>(reviews, HttpStatus.OK);
 	}
-}
+
 	
 
 	// method to get the favourite restaurant of the specific customer
