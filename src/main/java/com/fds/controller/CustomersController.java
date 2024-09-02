@@ -25,33 +25,27 @@ public class CustomersController {
 
 	private CustomersService customers_service;
 	
+	// method to get the specific customer
 	@RequestMapping(value="/{customerId}", method=RequestMethod.GET)
 	public ResponseEntity<Customers> getCustomerById(@PathVariable("customerId") int customer_id) {
 		Customers customer = customers_service.getSpecificCustomerById(customer_id);
 		return new ResponseEntity<Customers>(customer, HttpStatus.OK);
 	}
 	
-//	@RequestMapping(value="", method=RequestMethod.GET)
-//	public ResponseEntity<List<Customers>> getAllCustomer(){
-//		List<Customers> customerList = customers_service.getAllCustomers();
-//		if(customerList.size() == 0) {
-//			throw new CustomerNotFoundException("No Customer exist.");
-//		}
-//		return new ResponseEntity<List<Customers>>(customerList, HttpStatus.OK);
-//	}
+	// method to get all the customers
+	@RequestMapping(value="", method=RequestMethod.GET)
+	public ResponseEntity<List<Customers>> getAllCustomer() {
+		List<Customers> customerList = customers_service.getAllCustomers();
+		return new ResponseEntity<List<Customers>>(customerList, HttpStatus.OK);
+	}
 	
-//	//pankaj delete customer by Id
-//	@RequestMapping(value="/{customerId}", method=RequestMethod.DELETE)
-//	public ResponseEntity<SuccessResponse> deleteCustomerById(@PathVariable("customerId") int customer_id) {
-//		Customers customer = customers_service.deleteCustomerById(customer_id);
-//
-//		if(customer == null) {
-//			throw new CustomerNotFoundException("Customer with the id : "+customer_id+" dosen't exist.");
-//		}
-//		SuccessResponse response = new SuccessResponse("DELETESUCCESS", "Customer deleted successfully");
-//		
-//		return new ResponseEntity<SuccessResponse>(response, HttpStatus.OK);
-//	}
+	//method to delete the specific customer
+	@RequestMapping(value="/{customerId}", method=RequestMethod.DELETE)
+	public ResponseEntity<SuccessResponse> deleteCustomerById(@PathVariable("customerId") int customer_id) {
+		customers_service.deleteSpecificCustomerById(customer_id);
+		SuccessResponse response = new SuccessResponse("DELETESUCCESS", "Customer deleted successfully");
+		return new ResponseEntity<SuccessResponse>(response, HttpStatus.OK);
+	}
 	
 	// method to get all the reviews of the specific customer
 	@RequestMapping(value="/{customerId}/reviews", method=RequestMethod.GET)

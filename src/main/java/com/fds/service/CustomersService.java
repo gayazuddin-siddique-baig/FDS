@@ -27,7 +27,12 @@ public class CustomersService {
 	
 	// method to get all the customers
 	public List<Customers> getAllCustomers() {
-		return customers_repository.findAll();
+		List<Customers> customers = customers_repository.findAll();
+		
+		// throw exception if no customer is found
+		if(customers.isEmpty()) throw new CustomerNotFoundException("Customers list is empty", "GETALLFAILS");
+		
+		return customers;
 	}
 	
 	// method to get the specific customer

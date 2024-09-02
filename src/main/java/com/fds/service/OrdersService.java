@@ -34,7 +34,7 @@ public class OrdersService {
 	}
 
 	// method to assign the delivery driver to the specific order
-	public DeliveryDrivers assignDeliveryDriverForSpecificOrder(DeliveryDrivers delivery_driver, int order_id) {
+	public void assignDeliveryDriverForSpecificOrder(DeliveryDrivers delivery_driver, int order_id) {
 		Orders order = orders_repository.findById(order_id).orElse(null);
 		
 		// throw exception if the order is not found
@@ -42,12 +42,10 @@ public class OrdersService {
 		
 		DeliveryDrivers driver = order.getDeliverydrivers();
 		// throw exception if delivery driver is already assigned
-		if(driver != null) throw new AssingedDriverToOrderException("Order has alredy been assigned to an driver");
+		if(driver != null) throw new AssingedDriverToOrderException("Order has already been assigned to the driver with id: ");
 		
 		order.setDeliverydrivers(delivery_driver);
-		Orders newOrder = orders_repository.save(order);
-		
-		return newOrder.getDeliverydrivers();
+		orders_repository.save(order);
 	}
 	
 	// method to delete the specific order

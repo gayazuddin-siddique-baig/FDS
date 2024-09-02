@@ -47,10 +47,11 @@ public class DeliveryDriversController {
         return new ResponseEntity<List<Orders>>(orders, HttpStatus.OK);
     }
     
+    // method to update the vehicle of the specific driver
     @RequestMapping(value="/{driverId}/vehicle/{vehicleType}", method=RequestMethod.PUT)
     public ResponseEntity<SuccessResponse> updateVehicleOfSpecificDeliveryDriver(@PathVariable("driverId") int driver_id, @PathVariable("vehicleType") String vehicle) {
     	deliveryDriversService.updateVehicleOfSpecificDeliveryDriver(driver_id, vehicle);
-    	SuccessResponse success = new SuccessResponse("UPDATESUCCESS", "Vehicle updated successfully");
+    	SuccessResponse success = new SuccessResponse("UPDATESUCCESS", "Driver vehicle updated successfully");
     	return new ResponseEntity<SuccessResponse>(success, HttpStatus.OK);
     }
 }
