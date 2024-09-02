@@ -4,21 +4,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 
 import com.fds.exception.CustomerNotFoundException;
 import com.fds.exception.OrderNotFoundException;
 import com.fds.model.Customers;
 import com.fds.model.Orders;
 import com.fds.model.Ratings;
+import com.fds.model.Restaurants;
 import com.fds.repository.CustomersRepository;
+import com.fds.repository.RestaurantsRepository;
 
 import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
 public class CustomersService {
-
+	@Autowired
+	private RestaurantsRepository restaurants_repository;
 	private CustomersRepository customers_repository;
 	
 	// method to get the specific customer
@@ -53,4 +58,14 @@ public class CustomersService {
 		
 		return reviews;
 	}
+	
+	public Restaurants getFavouriteRestaurantOfCustomer(int customerId) {
+		Customers customer = getCustomersById(customerId);
+		if(customer == null) {
+			throw new CustomerNotFoundException("No customer found with id: " + customerId, "GETFAILS");
+		}
+		return restaurants_repository.getFavouriteRestaurantOfCustomer(customerId);
+	}
+
+
 }
