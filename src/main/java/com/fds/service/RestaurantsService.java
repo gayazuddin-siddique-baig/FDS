@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.fds.model.MenuItems;
 import com.fds.exception.MenuNotFoundException;
+import com.fds.exception.OrderNotFoundException;
 import com.fds.exception.RestaurantNotFoundException;
 import com.fds.model.Customers;
 import com.fds.model.DeliveryAddresses;
@@ -27,6 +28,8 @@ public class RestaurantsService {
 	// method to get all the restaurants
 	public List<Restaurants> getAllRestaurants() {
 		List<Restaurants> restaurants = restaurants_repository.findAll();
+		
+		// throw exception if the no restaurants are found
 		if(restaurants.isEmpty()) throw new RestaurantNotFoundException("Restaurants list is empty", "GETALLFAILS");
 		return restaurants;
 	}
@@ -34,7 +37,10 @@ public class RestaurantsService {
 	// method to delete the specific restaurant
 	public void deleteRestaurantById(int restaurant_id) {
 		Restaurants restaurant = restaurants_repository.findById(restaurant_id).orElse(null);
+		
+		// throw exception if the restaurant is not found
 		if(restaurant == null) throw new RestaurantNotFoundException("Restaurant doesn't exist with id: " +restaurant_id, "DELETEFAILS");
+		
 		restaurants_repository.deleteById(restaurant_id);
 	}
 
@@ -42,36 +48,37 @@ public class RestaurantsService {
 		return restaurants_repository.findById(restaurantId).orElse(null);
 	}
 	
-	public List<DeliveryAddresses> getDeliveryAddresses(int restaurantId) {
-		Optional<Restaurants> rs = restaurants_repository.findById(restaurantId);
-		List<DeliveryAddresses> list = new ArrayList<>();
-		if(rs.isPresent()) {
-			Restaurants restaurant = rs.get();
+	// method to get all the delivery areas served by the specific restaurant
+	public List<DeliveryAddresses> getDeliveryAddressesOfSpecificRestaurant(int restaurant_id) {
+		List<DeliveryAddresses> addresses = new ArrayList<>();
+		
+		Restaurants restaurant = restaurants_repository.findById(restaurant_id).orElse(null);
+		// throw exception if the restaurant is not found
+		if(restaurant == null) throw new RestaurantNotFoundException("Restaurant not found with id: " +restaurant_id, "GETALLFAILS");
 			
-			for(Orders order:restaurant.getOrders()) {
-				
-				for(DeliveryAddresses address: order.getCustomers().getDeliveryaddresses()) {
-					list.add(address);
-				}
-			}
-			
+		List<Orders> orders = restaurant.getOrders();
+		// throw exception if orders list is empty
+		if(orders.isEmpty()) throw new OrderNotFoundException("Orders list is empty", "GETALLFAILS");
+		
+		for(Orders order : orders) {
+			for(DeliveryAddresses address : order.getCustomers().getDeliveryaddresses()) addresses.add(address);
 		}
-		return list;
+			
+		return addresses;
 	}
 	
-	
-	public Restaurants updateRestaurantById(Restaurants newRestaurant, int restaurantId) {
+	// method to update the specific restaurant
+	public void updateRestaurantById(Restaurants newRestaurant, int restaurantId) {
+		Restaurants restaurant = restaurants_repository.findById(restaurantId).orElse(null);
 		
-		Optional<Restaurants> restaurant = restaurants_repository.findById(restaurantId);
-		if(restaurant.isPresent()) {
-			Restaurants oldRestaurant = restaurant.get();
-			oldRestaurant.setRestaurant_name(newRestaurant.getRestaurant_name());
-			oldRestaurant.setRestaurant_phone(newRestaurant.getRestaurant_phone());
-			oldRestaurant.setRestaurant_address(newRestaurant.getRestaurant_address());
+		// throw exception if the restaurant is not found
+		if(restaurant == null) throw new RestaurantNotFoundException("Restaurant not found with id: " +restaurantId, "UPDATEFAILS");
 			
-			return restaurants_repository.save(oldRestaurant);
-		}
-		else return null;
+		restaurant.setRestaurant_name(newRestaurant.getRestaurant_name());
+		restaurant.setRestaurant_phone(newRestaurant.getRestaurant_phone());
+		restaurant.setRestaurant_address(newRestaurant.getRestaurant_address());
+			
+		restaurants_repository.save(restaurant);
 	}
 
 	public List<String> getAllRatingsOfRestaurant(int restaurantId) {
@@ -99,15 +106,16 @@ public class RestaurantsService {
 		return restaurant.getMenuitems();
 	}
 	
-	// method to add menu item for a specific restaurant
+	// method to add menu item for the specific restaurant
 	public void addMenuItemInSpecificRestaurant(int restaurant_id, MenuItems menuItem) {
 		Restaurants restaurant = restaurants_repository.findById(restaurant_id).orElse(null);
-		if(restaurant != null) {
-			menuItem.setRestaurants(restaurant);
-			restaurant.getMenuitems().add(menuItem);
-			restaurants_repository.save(restaurant);
-		}
-		else throw new RestaurantNotFoundException("Restaurant not found with id: " +restaurant_id, "ADDFAILS");
+		
+		// throw exception if the restaurant is not found
+		if(restaurant == null) throw new RestaurantNotFoundException("Restaurant not found with id: " +restaurant_id, "ADDFAILS");
+		
+		menuItem.setRestaurants(restaurant);
+		restaurant.getMenuitems().add(menuItem);
+		restaurants_repository.save(restaurant);
 	}
 
 	public Restaurants saveRestaurants(Restaurants restaurant) {

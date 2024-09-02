@@ -39,7 +39,7 @@ public class OrdersController {
 	@RequestMapping(value="/{orderId}/assignDriver/{driverId}", method=RequestMethod.PUT)
 	public ResponseEntity<SuccessResponse> assignDriverById(@PathVariable("orderId") int orderId, @PathVariable("driverId") int driverId){
 		DeliveryDrivers deliveryDriver= deliveryDriversService.getSpecificDeliveryDriverById(driverId);
-		DeliveryDrivers updatedDriver=orders_service.assignDeliveryDriverForSpecificOrder(deliveryDriver, orderId);
+		orders_service.assignDeliveryDriverForSpecificOrder(deliveryDriver, orderId);
 		SuccessResponse response = new SuccessResponse("PUTSUCCESS", "Order has been successfully assinged to driver");
 		return new ResponseEntity<SuccessResponse>(response, HttpStatus.OK);
 	}
