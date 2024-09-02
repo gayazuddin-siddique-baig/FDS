@@ -11,6 +11,7 @@ import com.fds.model.Orders;
 @Repository
 public interface OrdersRepository extends JpaRepository<Orders, Integer> {
 
+	// SQL query to get all the details of the specific order
 	@Query(
 			value="SELECT * FROM orders WHERE order_id=?1",
 			nativeQuery=true

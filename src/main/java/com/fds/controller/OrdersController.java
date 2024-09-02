@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fds.dto.OrdersDTO;
-import com.fds.exception.DriverNotFoundException;
 import com.fds.exception.SuccessResponse;
 import com.fds.model.DeliveryDrivers;
 import com.fds.model.Orders;
@@ -38,9 +37,9 @@ public class OrdersController {
 	}
 	
 	@RequestMapping(value="/{orderId}/assignDriver/{driverId}", method=RequestMethod.PUT)
-	public ResponseEntity<SuccessResponse> assignDriverById(@PathVariable("orderId") int orderId,@PathVariable("driverId") int driverId){
-		DeliveryDrivers deliveryDriver= deliveryDriversService.getDriverById(driverId);
-		DeliveryDrivers updatedDriver=orders_service.updateDriver(deliveryDriver, orderId);
+	public ResponseEntity<SuccessResponse> assignDriverById(@PathVariable("orderId") int orderId, @PathVariable("driverId") int driverId){
+		DeliveryDrivers deliveryDriver= deliveryDriversService.getSpecificDeliveryDriverById(driverId);
+		orders_service.assignDeliveryDriverForSpecificOrder(deliveryDriver, orderId);
 		SuccessResponse response = new SuccessResponse("PUTSUCCESS", "Order has been successfully assinged to driver");
 		return new ResponseEntity<SuccessResponse>(response, HttpStatus.OK);
 	}
@@ -68,6 +67,7 @@ public class OrdersController {
 		SuccessResponse success = new SuccessResponse("DELETESUCCESS", "Order deleted successfully");
 		return new ResponseEntity<SuccessResponse>(success, HttpStatus.OK);
 	}
+	
 	//method to update the status of a specific order
 	@RequestMapping(value="/{orderId}/status", method=RequestMethod.PUT)
     public ResponseEntity<SuccessResponse> updateOrderStatus(@PathVariable("orderId") int order_id, @RequestParam("status") String status) {
@@ -75,7 +75,4 @@ public class OrdersController {
         SuccessResponse success = new SuccessResponse("UPDATESUCCESS", "Order status updated successfully");
         return new ResponseEntity<>(success, HttpStatus.OK);
     }
-
-	
-
 }
