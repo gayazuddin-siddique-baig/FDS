@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.fds.dto.OrdersDTO;
 import com.fds.exception.AssingedDriverToOrderException;
+import com.fds.exception.InvalidOrderStatusException;
 import com.fds.exception.OrderNotFoundException;
 import com.fds.model.DeliveryDrivers;
 import com.fds.model.Orders;
@@ -64,6 +65,8 @@ public class OrdersService {
         // throw exception if the order is not found
         if(order == null) throw new OrderNotFoundException("Order not found with id: " +order_id, "UPDATEFAILS");
        
+        if((!status.equalsIgnoreCase("Pending")) && (!status.equalsIgnoreCase("Delivered"))) throw new InvalidOrderStatusException("Order status is invalid", "UPDATEFAILS");
+        
     	order.setOrder_status(status);
     	orders_repository.save(order);
 	}

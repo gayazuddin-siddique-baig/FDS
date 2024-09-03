@@ -91,6 +91,11 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<ErrorResponse>(error, HttpStatus.NOT_FOUND);
 	}
 	
+	@ExceptionHandler(InvalidOrderStatusException.class)
+	public ResponseEntity<ErrorResponse> handleInvalidOrderStatusException(InvalidOrderStatusException e) {
+		ErrorResponse error = new ErrorResponse(e.getCode(), e.getMessage());
+		return new ResponseEntity<ErrorResponse>(error, HttpStatus.FORBIDDEN);
+	}
 	
 	//---------------end >>>>
 
