@@ -10,6 +10,7 @@ import com.fds.exception.MenuItemsFieldNotFoundException;
 import com.fds.exception.MenuNotFoundException;
 import com.fds.exception.OrderNotFoundException;
 import com.fds.exception.RatingsNotFoundException;
+import com.fds.exception.RestaurantFeildNotFoundException;
 import com.fds.exception.RestaurantNotFoundException;
 import com.fds.model.DeliveryAddresses;
 import com.fds.model.Orders;
@@ -150,6 +151,26 @@ public class RestaurantsService {
 
 	// method to add a new restaurant
 	public void addRestaurant(Restaurants restaurant) {
+		// throws an exception if restaurant id is not given
+		if(restaurant.getRestaurant_id() == 0) {
+			throw new RestaurantFeildNotFoundException("Restaurant Id is not given/valid, please give a valid Id", "POSTFAILS");
+		}
+		
+		// throws an exception if restaurant name is not given
+		if(restaurant.getRestaurant_name() == null) {
+			throw new RestaurantFeildNotFoundException("Restaurant name is not given, please give a valid name", "POSTFAILS");
+		}
+		
+		// throws an exception if restaurant phone number is not given
+		if(restaurant.getRestaurant_phone() == null) {
+			throw new RestaurantFeildNotFoundException("Restaurant phone is not given, please give a valid phone number", "POSTFAILS");
+		}
+		
+		// throws an exception if restaurant address is not given
+		if(restaurant.getRestaurant_address() == null) {
+			throw new RestaurantFeildNotFoundException("Restaurant address is not given, please give a valid address", "POSTFAILS");
+		}
+		
 		restaurants_repository.save(restaurant);
 	}
 
