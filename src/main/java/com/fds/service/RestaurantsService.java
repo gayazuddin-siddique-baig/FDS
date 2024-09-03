@@ -49,7 +49,6 @@ public class RestaurantsService {
 	public Restaurants getRestaurantById(int restaurantId){
 		Restaurants restaurant= restaurants_repository.findById(restaurantId).orElse(null);
 		if(restaurant == null) throw new RestaurantNotFoundException("Restaurant doesn't exist with id: " +restaurantId, "GETFAILS");
-		restaurants_repository.deleteById(restaurantId);
 		return restaurant;
 	}
 
