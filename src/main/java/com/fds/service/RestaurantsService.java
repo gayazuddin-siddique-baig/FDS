@@ -1,23 +1,22 @@
  package com.fds.service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.fds.model.MenuItems;
+import com.fds.exception.MenuItemsFieldNotFoundException;
 import com.fds.exception.MenuNotFoundException;
 import com.fds.exception.OrderNotFoundException;
 import com.fds.exception.RatingsNotFoundException;
+import com.fds.exception.RestaurantFeildNotFoundException;
 import com.fds.exception.RestaurantNotFoundException;
-import com.fds.model.Customers;
 import com.fds.model.DeliveryAddresses;
-import com.fds.model.DeliveryDrivers;
 import com.fds.model.Orders;
 import com.fds.model.Ratings;
 import com.fds.model.Restaurants;
+import com.fds.repository.MenuItemRepository;
 import com.fds.repository.RestaurantsRepository;
 
 @Service
@@ -25,6 +24,10 @@ public class RestaurantsService {
 
 	@Autowired
 	private RestaurantsRepository restaurants_repository;
+	
+	@Autowired
+	private MenuItemRepository menu_repository;
+
 	
 	// method to get all the restaurants
 	public List<Restaurants> getAllRestaurants() {
@@ -45,14 +48,29 @@ public class RestaurantsService {
 		restaurants_repository.deleteById(restaurant_id);
 	}
 
+	//get restaurant by id
 	public Restaurants getRestaurantById(int restaurantId){
-		return restaurants_repository.findById(restaurantId).orElse(null);
+		Restaurants restaurant= restaurants_repository.findById(restaurantId).orElse(null);
+		if(restaurant == null) throw new RestaurantNotFoundException("Restaurant doesn't exist with id: " +restaurantId, "GETFAILS");
+		return restaurant;
 	}
+
+	//delete a specific restaurant menu item
+	public void deleteMenuItemFromRestaurant(int restaurantId, int itemId) {
+		Restaurants restaurant= restaurants_repository.findById(restaurantId).orElse(null);
+		if(restaurant == null) throw new RestaurantNotFoundException("Restaurant doesn't exist with id: " +restaurantId, "GETFAILS");
+	
+	    MenuItems currItem= menu_repository.findById(itemId).orElse(null);
+	    if(currItem ==null) throw new MenuNotFoundException("Menu items list is empty", "GETALLFAILS");
+	    currItem.setRestaurants(null);
+	 
+	   menu_repository.save(currItem);
+	}
+	
 	
 	// method to get all the delivery areas served by the specific restaurant
 	public List<DeliveryAddresses> getDeliveryAddressesOfSpecificRestaurant(int restaurant_id) {
-		List<DeliveryAddresses> addresses = new ArrayList<>();
-		
+		List<DeliveryAddresses> addresses = new ArrayList<>();		
 		Restaurants restaurant = restaurants_repository.findById(restaurant_id).orElse(null);
 		// throw exception if the restaurant is not found
 		if(restaurant == null) throw new RestaurantNotFoundException("Restaurant not found with id: " +restaurant_id, "GETALLFAILS");
@@ -63,8 +81,7 @@ public class RestaurantsService {
 		
 		for(Orders order : orders) {
 			for(DeliveryAddresses address : order.getCustomers().getDeliveryaddresses()) addresses.add(address);
-		}
-			
+		}	
 		return addresses;
 	}
 	
@@ -121,12 +138,39 @@ public class RestaurantsService {
 		if(restaurant == null) throw new RestaurantNotFoundException("Restaurant not found with id: " +restaurant_id, "ADDFAILS");
 		
 		menuItem.setRestaurants(restaurant);
+		
+		// check if any menu items fields are null
+		if(menuItem.getItem_id() == 0) throw new MenuItemsFieldNotFoundException("Menu item id is not given", "POSTFAILS");
+		if(menuItem.getItem_name() == null) throw new MenuItemsFieldNotFoundException("Menu item name is not given", "POSTFAILS");
+		if(menuItem.getItem_description() == null) throw new MenuItemsFieldNotFoundException("Menu item description is not given", "POSTFAILS");
+		if(menuItem.getItem_price() == null) throw new MenuItemsFieldNotFoundException("Menu item price is not given", "POSTFAILS");
+		
 		restaurant.getMenuitems().add(menuItem);
 		restaurants_repository.save(restaurant);
 	}
 
 	// method to add a new restaurant
 	public void addRestaurant(Restaurants restaurant) {
+		// throws an exception if restaurant id is not given
+		if(restaurant.getRestaurant_id() == 0) {
+			throw new RestaurantFeildNotFoundException("Restaurant Id is not given/valid, please give a valid Id", "POSTFAILS");
+		}
+		
+		// throws an exception if restaurant name is not given
+		if(restaurant.getRestaurant_name() == null) {
+			throw new RestaurantFeildNotFoundException("Restaurant name is not given, please give a valid name", "POSTFAILS");
+		}
+		
+		// throws an exception if restaurant phone number is not given
+		if(restaurant.getRestaurant_phone() == null) {
+			throw new RestaurantFeildNotFoundException("Restaurant phone is not given, please give a valid phone number", "POSTFAILS");
+		}
+		
+		// throws an exception if restaurant address is not given
+		if(restaurant.getRestaurant_address() == null) {
+			throw new RestaurantFeildNotFoundException("Restaurant address is not given, please give a valid address", "POSTFAILS");
+		}
+		
 		restaurants_repository.save(restaurant);
 	}
 

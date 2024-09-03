@@ -2,7 +2,6 @@ package com.fds.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,12 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.fds.dto.OrdersDTO;
 import com.fds.exception.SuccessResponse;
 import com.fds.model.DeliveryDrivers;
 import com.fds.model.Orders;
-import com.fds.repository.OrdersRepository;
 import com.fds.service.DeliveryDriversService;
 import com.fds.service.OrdersService;
 
@@ -43,6 +40,20 @@ public class OrdersController {
 		SuccessResponse response = new SuccessResponse("PUTSUCCESS", "Order has been successfully assinged to driver");
 		return new ResponseEntity<SuccessResponse>(response, HttpStatus.OK);
 	}
+	
+	// method to place a new order
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    public ResponseEntity<SuccessResponse> placeOrder(@RequestBody OrdersDTO ordersDTO) {
+       
+        // Set other fields and relationships as necessary
+        // Assuming the existence of a method to handle setting relationships or additional logic
+
+        // Call to the OrdersService to save the order
+        orders_service.saveOrder(ordersDTO);
+
+        SuccessResponse response = new SuccessResponse("POSTSUCCESS", "Order placed successfully");
+        return new ResponseEntity<SuccessResponse>(response, HttpStatus.CREATED);
+    }
 	
 	// method to delete the specific order
 	@RequestMapping(value="/{orderId}", method=RequestMethod.DELETE)

@@ -91,11 +91,28 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<ErrorResponse>(error, HttpStatus.NOT_FOUND);
 	}
 	
+
 	@ExceptionHandler(InvalidOrderStatusException.class)
 	public ResponseEntity<ErrorResponse> handleInvalidOrderStatusException(InvalidOrderStatusException e) {
 		ErrorResponse error = new ErrorResponse(e.getCode(), e.getMessage());
 		return new ResponseEntity<ErrorResponse>(error, HttpStatus.FORBIDDEN);
 	}
+
+
+	// method to handle if restaurant feild is not given
+	@ExceptionHandler(RestaurantFeildNotFoundException.class)
+	public ResponseEntity<ErrorResponse> handleInvalidRestaurantIdException(RestaurantFeildNotFoundException e) {
+		ErrorResponse error = new ErrorResponse(e.getCode(), e.getMessage());
+		return new ResponseEntity<ErrorResponse>(error, HttpStatus.NOT_FOUND);
+	}
+
+	@ExceptionHandler(MenuItemsFieldNotFoundException.class)
+	public ResponseEntity<ErrorResponse> handleMenuItemsFieldNotFoundException(MenuItemsFieldNotFoundException e) {
+		ErrorResponse error = new ErrorResponse(e.getCode(), e.getMessage());
+		return new ResponseEntity<ErrorResponse>(error, HttpStatus.NOT_FOUND);
+	}
+	
+
 	
 	//---------------end >>>>
 

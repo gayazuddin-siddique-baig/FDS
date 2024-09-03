@@ -4,21 +4,14 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
-import org.springframework.web.bind.annotation.GetMapping;
-
-
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.fds.exception.SuccessResponse;
 import com.fds.model.DeliveryDrivers;
 import com.fds.model.Orders;
 import com.fds.service.DeliveryDriversService;
-
-import jakarta.annotation.security.PermitAll;
 import lombok.AllArgsConstructor;
 
 @RestController

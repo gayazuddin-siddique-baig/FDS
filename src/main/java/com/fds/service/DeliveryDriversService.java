@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fds.exception.DeliveryDriverNotFoundException;
+import com.fds.exception.RestaurantNotFoundException;
 import com.fds.model.DeliveryDrivers;
 import com.fds.model.Orders;
+import com.fds.model.Restaurants;
 import com.fds.repository.DeliveryDriversRepository;
 
 @Service
@@ -17,9 +19,17 @@ public class DeliveryDriversService {
     private DeliveryDriversRepository deliverydrivers_repository;
 
 	// method to get all the delivery drivers
-    public List<DeliveryDrivers> getAllDeliveryDrivers() {
-        return deliverydrivers_repository.findAll();
-    }
+//    public List<DeliveryDrivers> getAllDeliveryDrivers() {
+//        return deliverydrivers_repository.findAll();
+//      public List<Restaurants> getAllRestaurants() {
+	public List<DeliveryDrivers> getAllDeliveryDrivers() {
+		List<DeliveryDrivers> drivers = deliverydrivers_repository.findAll();
+		
+		// throw exception if the no restaurants are found
+		if(drivers.isEmpty()) throw new DeliveryDriverNotFoundException("Divers list is empty", "GETALLFAILS");
+		return drivers;
+	}
+        
     
     // method to get the specific delivery driver
     public DeliveryDrivers getSpecificDeliveryDriverById(int delivery_driver_id) {

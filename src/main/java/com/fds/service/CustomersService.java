@@ -2,11 +2,8 @@ package com.fds.service;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-
 import com.fds.exception.CustomerNotFoundException;
 import com.fds.exception.OrderNotFoundException;
 import com.fds.model.Customers;
@@ -25,16 +22,6 @@ public class CustomersService {
 	@Autowired
 	private CustomersRepository customers_repository;
 	
-	// method to get all the customers
-	public List<Customers> getAllCustomers() {
-		List<Customers> customers = customers_repository.findAll();
-		
-		// throw exception if no customer is found
-		if(customers.isEmpty()) throw new CustomerNotFoundException("Customers list is empty", "GETALLFAILS");
-		
-		return customers;
-	}
-	
 	// method to get the specific customer
 	public Customers getSpecificCustomerById(int customer_id) {
 		Customers customer = customers_repository.findById(customer_id).orElse(null);
@@ -45,6 +32,35 @@ public class CustomersService {
 		return customer;
 	}
 	
+
+	//update deatails for specific customer
+	public Customers updateCustomerById(int customer_id, Customers updatedCustomer) {
+	    Customers customer = customers_repository.findById(customer_id).orElse(null);
+	    if (customer != null) {
+	        // Update the existing customer's details with the new details
+	        customer.setCustomer_name(updatedCustomer.getCustomer_name());
+	       customer.setCustomer_email(updatedCustomer.getCustomer_email());
+	        customer.setCustomer_phone(updatedCustomer.getCustomer_phone());
+	        // Add more fields as needed
+	        customers_repository.save(customer);
+	    }
+	    if(customer == null) throw new CustomerNotFoundException("No customer found with id: " +customer_id, "GETFAILS");
+		return customer;
+	}
+	
+
+	
+	public List<Customers> getAllCustomers(){
+		return customers_repository.findAll();
+	}
+	
+	public Customers deleteCustomerById(int customer_id) {
+		Customers cust = customers_repository.findById(customer_id).orElse(null);
+		if(cust == null) {return null;}
+		customers_repository.deleteById(customer_id);
+		return cust;
+	}
+
 	// method to get all the reviews of the specific customer
 	public List<String> getReviewsOfSpecificCustomer(int customer_id) {
 		List<String> reviews = new ArrayList<>();
@@ -64,7 +80,15 @@ public class CustomersService {
 		
 		return reviews;
 	}
-	
+
+	public List<Orders> getAllOrdersByCustomerId(int customerId) {
+        Customers customer = customers_repository.findById(customerId).orElse(null);
+        if(customer == null) throw new CustomerNotFoundException("No customer found with id: " +customerId, "GETFAILS");
+        List<Orders> orders = customer.getOrders();
+        return orders;
+    }
+
+
 	// method to get the favourite restaurant of the specific customer
 	public Restaurants getFavouriteRestaurantOfCustomer(int customerId) {
 		Customers customer = customers_repository.findById(customerId).orElse(null);
@@ -81,4 +105,5 @@ public class CustomersService {
 		
 		customers_repository.deleteById(customer_id);
 	}
+
 }
