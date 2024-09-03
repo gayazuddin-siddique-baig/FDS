@@ -1,10 +1,12 @@
 package com.fds.service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.fds.model.MenuItems;
+import com.fds.exception.MenuItemsFieldNotFoundException;
 import com.fds.exception.MenuNotFoundException;
 import com.fds.exception.OrderNotFoundException;
 import com.fds.exception.RatingsNotFoundException;
@@ -136,6 +138,13 @@ public class RestaurantsService {
 		if(restaurant == null) throw new RestaurantNotFoundException("Restaurant not found with id: " +restaurant_id, "ADDFAILS");
 		
 		menuItem.setRestaurants(restaurant);
+		
+		// check if any menu items fields are null
+		if(menuItem.getItem_id() == 0) throw new MenuItemsFieldNotFoundException("Menu item id is not given", "POSTFAILS");
+		if(menuItem.getItem_name() == null) throw new MenuItemsFieldNotFoundException("Menu item name is not given", "POSTFAILS");
+		if(menuItem.getItem_description() == null) throw new MenuItemsFieldNotFoundException("Menu item description is not given", "POSTFAILS");
+		if(menuItem.getItem_price() == null) throw new MenuItemsFieldNotFoundException("Menu item price is not given", "POSTFAILS");
+		
 		restaurant.getMenuitems().add(menuItem);
 		restaurants_repository.save(restaurant);
 	}
